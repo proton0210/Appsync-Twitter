@@ -1,11 +1,11 @@
 # Schema Menu card for the users
 
-# This process is usually incremental process and it takes a lot iterations to get the final schema
+# This process is usually incremental process and it takes a lot iterations to get the final schema..
+
 
 schema {
   query: Query
-  mutation: Mutation
-}
+  mutation: Mutation}
 
 type Query {
   getImageUploadUrl(extension: String, contentType: String): AWSURL!
