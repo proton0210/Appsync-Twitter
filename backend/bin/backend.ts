@@ -1,3 +1,5 @@
+import { DataBaseStack } from "./../lib/stacks/DatabaseStack/database-stack";
+import { ComputeStack } from "./../lib/stacks/ComputeStack/compute-stack";
 import { UserPoolStack } from "./../lib/stacks/CognitoStack/user-pool-stack";
 import { ApiStack } from "./../lib/stacks/API_STACK/api-stack";
 // #!/usr/bin/env node
@@ -12,8 +14,14 @@ import * as cdk from "aws-cdk-lib";
  * User Pool Client for Web ,Mobile Clients
  */
 const app = new cdk.App();
-const userPoolStack = new UserPoolStack(app, "UserPoolStack", {});
+const computeStack = new ComputeStack(app, "ComputeStack");
+const userPoolStack = new UserPoolStack(app, "UserPoolStack", {
+  postConfirmationHook: computeStack.postConfirmationHook,
+});
 
 const apiStack = new ApiStack(app, "ApiStack", {
   userPool: userPoolStack.userPool,
+});
+const dataBaseStack = new DataBaseStack(app, "DataBaseStack", {
+  postConfirmationHook: computeStack.postConfirmationHook,
 });

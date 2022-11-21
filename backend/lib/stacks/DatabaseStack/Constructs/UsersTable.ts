@@ -2,8 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 export class UsersTable extends Construct {
-  public readonly usersTable: cdk.aws_dynamodb.Table;
-
+  public table: cdk.aws_dynamodb.Table;
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
@@ -20,6 +19,6 @@ export class UsersTable extends Construct {
     cdk.Tags.of(table).add("Name", "UsersTable");
 
     //member variable for API stack
-    this.usersTable = table;
+    this.table = table;
   }
 }

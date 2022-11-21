@@ -1,6 +1,8 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-export interface UserPoolStackProps extends cdk.StackProps {}
+export interface UserPoolStackProps extends cdk.StackProps {
+  postConfirmationHook: cdk.aws_lambda_nodejs.NodejsFunction;
+}
 
 export class UserPoolStack extends cdk.Stack {
   public readonly userPool: cdk.aws_cognito.UserPool;
@@ -8,6 +10,8 @@ export class UserPoolStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: UserPoolStackProps) {
     super(scope, id, props);
     //Cognito User Pool
+
+    //Once the Pool is created you cannot change the schema...
     const userPool = new cdk.aws_cognito.UserPool(this, "UserPool", {
       userPoolName: "TwitterUserPool",
       autoVerify: {
@@ -29,6 +33,10 @@ export class UserPoolStack extends cdk.Stack {
         }),
       },
     });
+    userPool.addTrigger(
+      cdk.aws_cognito.UserPoolOperation.POST_CONFIRMATION,
+      props.postConfirmationHook
+    );
 
     //Member Variable for API stack
     this.userPool = userPool;
