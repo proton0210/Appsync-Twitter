@@ -1,7 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 export interface UserPoolStackProps extends cdk.StackProps {
-  postConfirmationHook: cdk.aws_lambda_nodejs.NodejsFunction;
+  postConfirmationHook: cdk.aws_lambda_nodejs.NodejsFunction; // Coming from Compute Stack
 }
 
 export class UserPoolStack extends cdk.Stack {

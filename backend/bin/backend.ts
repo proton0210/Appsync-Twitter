@@ -19,9 +19,11 @@ const userPoolStack = new UserPoolStack(app, "UserPoolStack", {
   postConfirmationHook: computeStack.postConfirmationHook,
 });
 
-const apiStack = new ApiStack(app, "ApiStack", {
-  userPool: userPoolStack.userPool,
-});
 const dataBaseStack = new DataBaseStack(app, "DataBaseStack", {
   postConfirmationHook: computeStack.postConfirmationHook,
+});
+
+const apiStack = new ApiStack(app, "ApiStack", {
+  userPool: userPoolStack.userPool,
+  usersTable: dataBaseStack.usersTable.table,
 });
