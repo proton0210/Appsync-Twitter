@@ -1,5 +1,4 @@
 import { DataBaseStackProps } from "./../../../Interfaces/database-interface";
-import { ConfirmUserSignUp } from "./../ComputeStack/Constructs/confirm-user";
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { UsersTable } from "./Constructs/UsersTable";

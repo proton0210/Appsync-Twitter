@@ -52,14 +52,16 @@ export class UserPoolStack extends cdk.Stack {
         },
       }
     );
-    const WebClientId = new cdk.CfnOutput(this, "IdentityPoolId", {
-      value: userPoolWebClient.userPoolClientId,
-      exportName: "WebClientIId",
-    });
+
     // Cognito User Pool id
     const userPoolId = new cdk.CfnOutput(this, "UserPoolId", {
       value: userPool.userPoolId,
       exportName: "UserPoolId",
+    });
+
+    const WebClientId = new cdk.CfnOutput(this, "Web Client Id ", {
+      value: userPoolWebClient.userPoolClientId,
+      exportName: "Web-Client-Id",
     });
   }
 }
