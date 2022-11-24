@@ -1,4 +1,4 @@
-import { UsersTable } from "./../../DatabaseStack/Constructs/UsersTable";
+import { UsersTable } from "../../DatabaseStack/Constructs/UsersTable";
 import * as cdk from "aws-cdk-lib";
 import * as appsync from "@aws-cdk/aws-appsync-alpha";
 import { Construct } from "constructs";
