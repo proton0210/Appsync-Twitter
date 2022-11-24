@@ -2,7 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import * as appsync from "@aws-cdk/aws-appsync-alpha";
 import { Construct } from "constructs";
 import * as path from "path";
-export class GetMyProfileResolver extends Construct {
+export class EditMyProfile extends Construct {
   public api: appsync.GraphqlApi;
   public usersTable: cdk.aws_dynamodb.Table;
   public resolver: appsync.Resolver;
@@ -15,24 +15,25 @@ export class GetMyProfileResolver extends Construct {
     super(scope, id);
     this.api = api;
     this.usersTable = usersTable;
-    this.resolver = this.createGetMyProfileResolver();
+    this.resolver = this.createEditMyProfile();
   }
-  public createGetMyProfileResolver() {
+  public createEditMyProfile() {
+    // first arg should always be different!
     return this.api
-      .addDynamoDbDataSource("UsersTableMyProfile", this.usersTable)
+      .addDynamoDbDataSource("UsersTableEditMyProfile", this.usersTable)
       .createResolver({
-        typeName: "Query",
-        fieldName: "getMyProfile",
+        typeName: "Mutation",
+        fieldName: "editMyProfile",
         requestMappingTemplate: appsync.MappingTemplate.fromFile(
           path.join(
             __dirname,
-            "../resolvers/query/getMyProfile/getMyProfileRequest.vtl"
+            "../resolvers/mutations/EditMyProfile/request.vtl"
           )
         ),
         responseMappingTemplate: appsync.MappingTemplate.fromFile(
           path.join(
             __dirname,
-            "../resolvers/query/getMyProfile/getMyProfileResponse.vtl"
+            "../resolvers/mutations/EditMyProfile/response.vtl"
           )
         ),
       });

@@ -9,7 +9,7 @@ export class UserPoolStack extends cdk.Stack {
 
   constructor(scope: Construct, id: string, props: UserPoolStackProps) {
     super(scope, id, props);
-    //Cognito User Pool
+    //Cognito User Pool- How you want to user to sign up for you application and verify
 
     //Once the Pool is created you cannot change the schema...
     const userPool = new cdk.aws_cognito.UserPool(this, "UserPool", {
