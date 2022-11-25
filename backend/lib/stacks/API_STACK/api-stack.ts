@@ -43,7 +43,7 @@ export class ApiStack extends cdk.Stack {
       this.props.usersTable
     ).resolver;
   }
-
+  // id string should be unique for each construct
   public mutations() {
     new EditMyProfile(
       this,
