@@ -1,3 +1,5 @@
+/* Goal of this file is to create a signed url for uploading an image to S3 bucket. */
+
 const S3 = require("aws-sdk/clients/s3");
 const s3 = new S3({ useAccelerateEndpoint: true });
 const ulid = require("ulid");
@@ -28,6 +30,6 @@ module.exports.handler = async (event) => {
     ACL: "public-read",
     ContentType: contentType,
   };
-  const signedUrl = s3.getSignedUrl("putObject", params);
+  const signedUrl = s3.getSignedUrl("putObject", params); // this requires put ACL turned on S3 bucket.
   return signedUrl;
 };

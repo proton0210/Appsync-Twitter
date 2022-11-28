@@ -58,6 +58,7 @@ describe("Given an authenticated user", () => {
 
   it("The user can edit his profile with editMyProfile", async () => {
     const newName = chance.first();
+
     const input = {
       name: newName,
     };
