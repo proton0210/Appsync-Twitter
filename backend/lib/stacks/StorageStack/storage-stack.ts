@@ -13,6 +13,9 @@ export class StorageStack extends cdk.Stack {
   public initializeUserImageBucket() {
     const bucket = new UserImageBucket(this, "UserImageBucket");
     bucket.userImageBucket.grantReadWrite(this.imageUploadFunction);
+    // Important Put ACL
+    bucket.userImageBucket.grantPutAcl(this.imageUploadFunction);
+
     new cdk.CfnOutput(this, "UserImageBucketName", {
       value: bucket.userImageBucket.bucketName,
     });

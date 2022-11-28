@@ -3,6 +3,9 @@ Objective: Verify actions from the Users or API which took place (in When.js) ->
  */
 const AWS = require("aws-sdk");
 require("dotenv").config();
+const http = require("axios");
+const fs = require("fs");
+const _ = require("lodash");
 
 const user_exists_in_UsersTable = async (id) => {
   const DynamoDB = new AWS.DynamoDB.DocumentClient();
@@ -17,6 +20,30 @@ const user_exists_in_UsersTable = async (id) => {
   return resp.Item;
 };
 
+const user_can_upload_image_to_url = async (url, filepath, contentType) => {
+  const data = fs.readFileSync(filepath);
+  await http({
+    method: "put",
+    url,
+    headers: {
+      "Content-Type": contentType,
+    },
+    data,
+  });
+
+  console.log("uploaded image to", url);
+};
+
+const user_can_download_image_from = async (url) => {
+  const resp = await http(url);
+
+  console.log("downloaded image from", url);
+
+  return resp.data;
+};
+
 module.exports = {
   user_exists_in_UsersTable,
+  user_can_upload_image_to_url,
+  user_can_download_image_from,
 };
