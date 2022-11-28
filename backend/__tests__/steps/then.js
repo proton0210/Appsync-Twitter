@@ -1,5 +1,5 @@
 /*
-Objective: Verify actions from the Users or API which took place (in When.js) 
+Objective: Verify actions from the Users or API which took place (in When.js) -> Side Effects!
  */
 const AWS = require("aws-sdk");
 require("dotenv").config();

@@ -1,6 +1,6 @@
 /*
  *Objective of this file is to simulate the user actions and Api Actions
- * Api Actiions whih are programmed explicity by Developer(eg : PostSignUpHook)
+ * Api Actions which are programmed explicity by Developer(eg : PostSignUpHook)
  */
 
 // Load .env file from root of your folder (backend)
@@ -40,9 +40,31 @@ const we_invoke_confirm_user_signup = async (username, name, email) => {
   await handler(event, context);
 };
 
+const we_invoke_getImageUploadUrl = async (
+  username,
+  extension,
+  contentType
+) => {
+  const handler =
+    require("../../lib/stacks/API_STACK/resolvers/query/GetImageUploadUrl/index").handler;
+
+  const context = {};
+  const event = {
+    identity: {
+      username,
+    },
+    arguments: {
+      extension,
+      contentType,
+    },
+  };
+
+  return await handler(event, context);
+};
+
 /*
-* This flow should automatically trigger the ConfirmSignUpTrigger function
-*/
+ * This flow should automatically trigger the ConfirmSignUpTrigger function
+ */
 const a_user_signs_up = async (password, name, email) => {
   const cognito = new AWS.CognitoIdentityServiceProvider();
   const userPoolId = process.env.COGNITO_USER_POOL_ID;
@@ -144,22 +166,28 @@ const a_user_calls_editMyProfile = async (user, input) => {
       tweetsCount
       website
     }
-  }`
+  }`;
   const variables = {
-    input
-  }
+    input,
+  };
 
-  const data = await GraphQL(process.env.API_URL, editMyProfile, variables, user.accessToken)
-  const profile = data.editMyProfile
+  const data = await GraphQL(
+    process.env.API_URL,
+    editMyProfile,
+    variables,
+    user.accessToken
+  );
+  const profile = data.editMyProfile;
 
-  console.log(`[${user.username}] - edited profile`)
+  console.log(`[${user.username}] - edited profile`);
 
-  return profile
-}
+  return profile;
+};
 module.exports = {
   we_invoke_confirm_user_signup,
   a_user_signs_up,
   we_invoke_an_appsync_template,
   a_user_calls_getMyProfile,
-  a_user_calls_editMyProfile
+  a_user_calls_editMyProfile,
+  we_invoke_getImageUploadUrl,
 };

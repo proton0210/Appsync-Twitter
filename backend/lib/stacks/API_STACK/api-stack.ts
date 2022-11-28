@@ -5,9 +5,11 @@ import { Construct } from "constructs";
 import * as appsync from "@aws-cdk/aws-appsync-alpha";
 import * as path from "path";
 import { EditMyProfile } from "./Constructs/EditMyProfileConstruct";
+import { GetImageUploadURL } from "./Constructs/GetImageUploadUrlConstruct";
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
+  public imageUploadFunction: cdk.aws_lambda_nodejs.NodejsFunction;
 
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
@@ -42,6 +44,14 @@ export class ApiStack extends cdk.Stack {
       this.api,
       this.props.usersTable
     ).resolver;
+
+    const getImageUploadUrl = new GetImageUploadURL(
+      this,
+      "QueryGetImageUploadUrl",
+      this.api
+    );
+    getImageUploadUrl.resolver;
+    this.imageUploadFunction = getImageUploadUrl.getImageUploadURLfunction;
   }
   // id string should be unique for each construct
   public mutations() {

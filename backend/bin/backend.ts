@@ -1,3 +1,4 @@
+import { StorageStack } from './../lib/stacks/StorageStack/storage-stack';
 import { DataBaseStack } from "./../lib/stacks/DatabaseStack/database-stack";
 import { ComputeStack } from "./../lib/stacks/ComputeStack/compute-stack";
 import { UserPoolStack } from "./../lib/stacks/CognitoStack/user-pool-stack";
@@ -26,4 +27,8 @@ const dataBaseStack = new DataBaseStack(app, "DataBaseStack", {
 const apiStack = new ApiStack(app, "ApiStack", {
   userPool: userPoolStack.userPool,
   usersTable: dataBaseStack.usersTable.table,
+});
+
+const storageStack = new StorageStack(app, "StorageStack", {
+  imageUploadFunction: apiStack.imageUploadFunction,
 });
