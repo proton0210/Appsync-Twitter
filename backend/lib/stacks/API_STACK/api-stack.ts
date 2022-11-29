@@ -1,53 +1,54 @@
-import { GetMyProfileResolver } from "./Constructs/GetMyProfileConstruct";
-import { ApiStackProps } from "./../../../Interfaces/api-interface";
-import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import * as appsync from "@aws-cdk/aws-appsync-alpha";
-import * as path from "path";
-import { EditMyProfile } from "./Constructs/EditMyProfileConstruct";
-import { GetImageUploadURL } from "./Constructs/GetImageUploadUrlConstruct";
+import { Tweet } from './Constructs/TweetConstruct';
+import { GetMyProfileResolver } from './Constructs/GetMyProfileConstruct';
+import { ApiStackProps } from './../../../Interfaces/api-interface';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as appsync from '@aws-cdk/aws-appsync-alpha';
+import * as path from 'path';
+import { EditMyProfile } from './Constructs/EditMyProfileConstruct';
+import { GetImageUploadURL } from './Constructs/GetImageUploadUrlConstruct';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
   public imageUploadFunction: cdk.aws_lambda_nodejs.NodejsFunction;
-
+  public tweetFunction: cdk.aws_lambda_nodejs.NodejsFunction;
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
-    this.api = new appsync.GraphqlApi(this, "Api", {
-      name: "twitter-api",
+    this.api = new appsync.GraphqlApi(this, 'Api', {
+      name: 'twitter-api',
       schema: appsync.Schema.fromAsset(
-        path.join(__dirname, "Schema/schema.api.graphql")
+        path.join(__dirname, 'Schema/schema.api.graphql')
       ),
       authorizationConfig: {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.USER_POOL,
           userPoolConfig: {
-            userPool: props.userPool,
-          },
-        },
-      },
+            userPool: props.userPool
+          }
+        }
+      }
     });
     this.props = props;
     this.queries();
     this.mutations();
 
     //output API URL
-    new cdk.CfnOutput(this, "GraphQLAPIURL", {
-      value: this.api.graphqlUrl,
+    new cdk.CfnOutput(this, 'GraphQLAPIURL', {
+      value: this.api.graphqlUrl
     });
   }
 
   public queries() {
     new GetMyProfileResolver(
       this,
-      "QueryGetMyProfileResolver",
+      'QueryGetMyProfileResolver',
       this.api,
       this.props.usersTable
     ).resolver;
 
     const getImageUploadUrl = new GetImageUploadURL(
       this,
-      "QueryGetImageUploadUrl",
+      'QueryGetImageUploadUrl',
       this.api
     );
     getImageUploadUrl.resolver;
@@ -57,9 +58,15 @@ export class ApiStack extends cdk.Stack {
   public mutations() {
     new EditMyProfile(
       this,
-      "EditMyProfileResolver",
+      'EditMyProfileResolver',
       this.api,
       this.props.usersTable
     ).resolver;
+
+    const tweetMutation = new Tweet(this, 'TweetMutation', this.api);
+    tweetMutation.resolver;
+    this.props.usersTable.grantFullAccess(tweetMutation.Tweetfunction);
+    this.props.tweetsTable.grantFullAccess(tweetMutation.Tweetfunction);
+    this.props.timelinesTable.grantFullAccess(tweetMutation.Tweetfunction);
   }
 }
