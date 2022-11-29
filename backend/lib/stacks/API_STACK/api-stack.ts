@@ -7,6 +7,8 @@ import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import * as path from 'path';
 import { EditMyProfile } from './Constructs/EditMyProfileConstruct';
 import { GetImageUploadURL } from './Constructs/GetImageUploadUrlConstruct';
+import { GetTweetsResolver } from './Constructs/GetTweetsConstuct';
+import { NestedProfileTweet } from './Constructs/NestedProfile_Type_Tweet';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -32,6 +34,7 @@ export class ApiStack extends cdk.Stack {
     this.props = props;
     this.queries();
     this.mutations();
+    this.nestedResolvers();
 
     //output API URL
     new cdk.CfnOutput(this, 'GraphQLAPIURL', {
@@ -54,7 +57,24 @@ export class ApiStack extends cdk.Stack {
     );
     getImageUploadUrl.resolver;
     this.imageUploadFunction = getImageUploadUrl.getImageUploadURLfunction;
+
+    new GetTweetsResolver(
+      this,
+      'QueryGetTweetsResolver',
+      this.api,
+      this.props.tweetsTable
+    ).resolver;
   }
+
+  public nestedResolvers() {
+    new NestedProfileTweet(
+      this,
+      'NestedProfileTweet',
+      this.api,
+      this.props.usersTable
+    ).resolver;
+  }
+
   // id string should be unique for each construct
   public mutations() {
     new EditMyProfile(
