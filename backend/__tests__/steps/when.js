@@ -4,37 +4,37 @@
  */
 
 // Load .env file from root of your folder (backend)
-require("dotenv").config();
+require('dotenv').config();
 
-const AWS = require("aws-sdk");
-const fs = require("fs");
-const velocityMapper = require("amplify-appsync-simulator/lib/velocity/value-mapper/mapper");
-const velocityTemplate = require("amplify-velocity-template");
-const GraphQL = require("../lib/graphql");
+const AWS = require('aws-sdk');
+const fs = require('fs');
+const velocityMapper = require('amplify-appsync-simulator/lib/velocity/value-mapper/mapper');
+const velocityTemplate = require('amplify-velocity-template');
+const GraphQL = require('../lib/graphql');
 const we_invoke_confirm_user_signup = async (username, name, email) => {
   const handler =
-    require("../../lib/stacks/ComputeStack/Functions/ConfirmSignUpTrigger/index").handler;
+    require('../../lib/stacks/ComputeStack/Functions/ConfirmSignUpTrigger/index').handler;
 
   const context = {};
 
   // We got this from Lumigo!
   const event = {
-    version: "1",
+    version: '1',
     region: process.env.AWS_REGION,
     userPoolId: process.env.COGNITO_USER_POOL_ID,
     userName: username,
-    triggerSource: "PostConfirmation_ConfirmSignUp",
+    triggerSource: 'PostConfirmation_ConfirmSignUp',
     request: {
       userAttributes: {
         sub: username,
-        "cognito:email_alias": email,
-        "cognito:user_status": "CONFIRMED",
-        email_verified: "false",
+        'cognito:email_alias': email,
+        'cognito:user_status': 'CONFIRMED',
+        email_verified: 'false',
         name: name,
-        email: email,
-      },
+        email: email
+      }
     },
-    response: {},
+    response: {}
   };
 
   await handler(event, context);
@@ -46,17 +46,33 @@ const we_invoke_getImageUploadUrl = async (
   contentType
 ) => {
   const handler =
-    require("../../lib/stacks/API_STACK/resolvers/query/GetImageUploadUrl/index").handler;
+    require('../../lib/stacks/API_STACK/resolvers/query/GetImageUploadUrl/index').handler;
 
   const context = {};
   const event = {
     identity: {
-      username,
+      username
     },
     arguments: {
       extension,
-      contentType,
+      contentType
+    }
+  };
+
+  return await handler(event, context);
+};
+const we_invoke_tweet = async (username, text) => {
+  const handler =
+    require('../../lib/stacks/API_STACK/resolvers/mutations/Tweet/index').handler;
+
+  const context = {};
+  const event = {
+    identity: {
+      username
     },
+    arguments: {
+      text
+    }
   };
 
   return await handler(event, context);
@@ -77,10 +93,10 @@ const a_user_signs_up = async (password, name, email) => {
       Password: password,
       UserAttributes: [
         {
-          Name: "name",
-          Value: name,
-        },
-      ],
+          Name: 'name',
+          Value: name
+        }
+      ]
     })
     .promise();
 
@@ -97,17 +113,17 @@ const a_user_signs_up = async (password, name, email) => {
   return {
     username,
     name,
-    email,
+    email
   };
 };
 
 const we_invoke_an_appsync_template = (templatePath, context) => {
-  const template = fs.readFileSync(templatePath, "utf8");
+  const template = fs.readFileSync(templatePath, 'utf8');
   // Ast = Abstract Syntax Tree (Rember from TypeScrpt Book)
   const ast = velocityTemplate.parse(template);
   const compiler = new velocityTemplate.Compile(ast, {
     valueMapper: velocityMapper.map,
-    escape: false,
+    escape: false
   });
   return JSON.parse(compiler.render(context));
 };
@@ -168,7 +184,7 @@ const a_user_calls_editMyProfile = async (user, input) => {
     }
   }`;
   const variables = {
-    input,
+    input
   };
 
   const data = await GraphQL(
@@ -189,7 +205,7 @@ const a_user_calls_getImageUploadUrl = async (user, extension, contentType) => {
   }`;
   const variables = {
     extension,
-    contentType,
+    contentType
   };
 
   const data = await GraphQL(
@@ -212,4 +228,5 @@ module.exports = {
   a_user_calls_editMyProfile,
   we_invoke_getImageUploadUrl,
   a_user_calls_getImageUploadUrl,
+  we_invoke_tweet
 };

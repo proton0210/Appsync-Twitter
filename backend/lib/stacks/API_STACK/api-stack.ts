@@ -12,6 +12,7 @@ export class ApiStack extends cdk.Stack {
   public props: ApiStackProps;
   public imageUploadFunction: cdk.aws_lambda_nodejs.NodejsFunction;
   public tweetFunction: cdk.aws_lambda_nodejs.NodejsFunction;
+
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
     this.api = new appsync.GraphqlApi(this, 'Api', {
