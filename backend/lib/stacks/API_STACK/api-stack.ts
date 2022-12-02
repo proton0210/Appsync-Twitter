@@ -1,3 +1,5 @@
+import { NestedTimelinePage } from './Constructs/NestedTimeline';
+import { GetMyTimeLine } from './Constructs/GetMyTimeLine';
 import { Tweet } from './Constructs/TweetConstruct';
 import { GetMyProfileResolver } from './Constructs/GetMyProfileConstruct';
 import { ApiStackProps } from './../../../Interfaces/api-interface';
@@ -64,6 +66,13 @@ export class ApiStack extends cdk.Stack {
       this.api,
       this.props.tweetsTable
     ).resolver;
+
+    new GetMyTimeLine(
+      this,
+      'QueryGetMyTimeLineResolver',
+      this.api,
+      this.props.timelinesTable
+    ).resolver;
   }
 
   public nestedResolvers() {
@@ -72,6 +81,13 @@ export class ApiStack extends cdk.Stack {
       'NestedProfileTweet',
       this.api,
       this.props.usersTable
+    ).resolver;
+
+    new NestedTimelinePage(
+      this,
+      'NestedTimelinePage',
+      this.api,
+      this.props.tweetsTable
     ).resolver;
   }
 
