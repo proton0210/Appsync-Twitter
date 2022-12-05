@@ -18,7 +18,7 @@ const a_random_user = () => {
   return { name, password, email };
 };
 
-const an_appsync_context = (identity, args, result) => {
+const an_appsync_context = (identity, args, result, source) => {
   const util = velocityUtil.create([], new Date(), Object());
 
   // VTL works same for (args & arguments) and (ctx & context)
@@ -26,7 +26,8 @@ const an_appsync_context = (identity, args, result) => {
     identity,
     args,
     arguments: args,
-    result
+    result,
+    source
   };
   return {
     context,
