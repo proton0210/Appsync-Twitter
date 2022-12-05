@@ -1,3 +1,4 @@
+import { NestedLiked } from './Constructs/NestedLiked';
 import { Like } from './Constructs/LikeContruct';
 import { NestedTimelinePage } from './Constructs/NestedTimeline';
 import { GetMyTimeLine } from './Constructs/GetMyTimeLine';
@@ -90,6 +91,8 @@ export class ApiStack extends cdk.Stack {
       this.api,
       this.props.tweetsTable
     ).resolver;
+
+    new NestedLiked(this, 'NestedLiked', this.api, this.props.likesTable);
   }
 
   // id string should be unique for each construct
