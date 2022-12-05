@@ -1,3 +1,4 @@
+import { Like } from './Constructs/LikeContruct';
 import { NestedTimelinePage } from './Constructs/NestedTimeline';
 import { GetMyTimeLine } from './Constructs/GetMyTimeLine';
 import { Tweet } from './Constructs/TweetConstruct';
@@ -100,10 +101,21 @@ export class ApiStack extends cdk.Stack {
       this.props.usersTable
     ).resolver;
 
+    //Tweet Mutation
     const tweetMutation = new Tweet(this, 'TweetMutation', this.api);
     tweetMutation.resolver;
     this.props.usersTable.grantFullAccess(tweetMutation.Tweetfunction);
     this.props.tweetsTable.grantFullAccess(tweetMutation.Tweetfunction);
     this.props.timelinesTable.grantFullAccess(tweetMutation.Tweetfunction);
+
+    //Like Mutation
+    // Manually have to add access in the service role from console for tweets and likes table
+    const LikeMutation = new Like(
+      this,
+      'LikeMutation',
+      this.api,
+      this.props.likesTable
+    );
+    LikeMutation.resolver;
   }
 }

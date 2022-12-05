@@ -153,7 +153,7 @@ const a_user_signs_up = async (password, name, email) => {
 
 const we_invoke_an_appsync_template = (templatePath, context) => {
   const template = fs.readFileSync(templatePath, 'utf8');
-  // Ast = Abstract Syntax Tree (Rember from TypeScrpt Book)
+  // Ast = Abstract Syntax Tree (Remember from TypeScript Book)
   const ast = velocityTemplate.parse(template);
   const compiler = new velocityTemplate.Compile(ast, {
     valueMapper: velocityMapper.map,

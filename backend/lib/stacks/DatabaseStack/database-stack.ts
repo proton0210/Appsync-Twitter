@@ -1,14 +1,16 @@
+import { LikesTable } from './Constructs/LikesTable';
 import { TweetsTable } from './Constructs/TweetsTable';
-import { DataBaseStackProps } from "./../../../Interfaces/database-interface";
-import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { UsersTable } from "./Constructs/UsersTable";
+import { DataBaseStackProps } from './../../../Interfaces/database-interface';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import { UsersTable } from './Constructs/UsersTable';
 import { TimelinesTable } from './Constructs/TimelinesTable';
 
 export class DataBaseStack extends cdk.Stack {
   public usersTable: UsersTable;
   public tweetsTable: TweetsTable;
   public timelinesTable: TimelinesTable;
+  public likesTable: LikesTable;
   public props: DataBaseStackProps;
 
   constructor(scope: Construct, id: string, props: DataBaseStackProps) {
@@ -21,18 +23,23 @@ export class DataBaseStack extends cdk.Stack {
     this.initializeUserTableWithAccess();
     this.initializeTweetsTableWithAccess();
     this.initializeTimeLinesTableWithAccess();
+    this.initializeLikesTableWithAccess();
   }
 
   initializeUserTableWithAccess() {
-    this.usersTable = new UsersTable(this, "UsersTable");
+    this.usersTable = new UsersTable(this, 'UsersTable');
     this.usersTable.table.grantFullAccess(this.props.postConfirmationHook);
   }
 
   initializeTweetsTableWithAccess() {
-    this.tweetsTable = new TweetsTable(this, "TweetsTable");
+    this.tweetsTable = new TweetsTable(this, 'TweetsTable');
   }
 
   initializeTimeLinesTableWithAccess() {
-    this.timelinesTable = new TimelinesTable(this, "TimelinesTable");
+    this.timelinesTable = new TimelinesTable(this, 'TimelinesTable');
+  }
+
+  initializeLikesTableWithAccess() {
+    this.likesTable = new LikesTable(this, 'LikesTable');
   }
 }
