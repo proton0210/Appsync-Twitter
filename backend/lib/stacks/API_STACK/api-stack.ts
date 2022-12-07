@@ -1,6 +1,8 @@
+import { GetLikes } from './Constructs/GetLikesConstruct';
+import { Unlike } from './Constructs/UnlikeConstruct';
 import { NestedLiked } from './Constructs/NestedLiked';
 import { Like } from './Constructs/LikeContruct';
-import { NestedTimelinePage } from './Constructs/NestedTimeline';
+import { NestedUnhydratedTweetsPage } from './Constructs/NestedUnhydratedTweets';
 import { GetMyTimeLine } from './Constructs/GetMyTimeLine';
 import { Tweet } from './Constructs/TweetConstruct';
 import { GetMyProfileResolver } from './Constructs/GetMyProfileConstruct';
@@ -75,6 +77,9 @@ export class ApiStack extends cdk.Stack {
       this.api,
       this.props.timelinesTable
     ).resolver;
+
+    new GetLikes(this, 'QueryGetLikesResolver', this.api, this.props.likesTable)
+      .resolver;
   }
 
   public nestedResolvers() {
@@ -85,9 +90,9 @@ export class ApiStack extends cdk.Stack {
       this.props.usersTable
     ).resolver;
 
-    new NestedTimelinePage(
+    new NestedUnhydratedTweetsPage(
       this,
-      'NestedTimelinePage',
+      'NestedUnhydratedTweetsPage',
       this.api,
       this.props.tweetsTable
     ).resolver;
@@ -112,7 +117,7 @@ export class ApiStack extends cdk.Stack {
     this.props.timelinesTable.grantFullAccess(tweetMutation.Tweetfunction);
 
     //Like Mutation
-    // Manually have to add access in the service role from console for tweets and likes table
+    // Manually have to add access in the service role from console for tweets and users table
     const LikeMutation = new Like(
       this,
       'LikeMutation',
@@ -120,5 +125,16 @@ export class ApiStack extends cdk.Stack {
       this.props.likesTable
     );
     LikeMutation.resolver;
+
+    //Unlike Mutation
+    // Manually have to add access in the service role from console for tweets and users table
+
+    const UnlikeMutation = new Unlike(
+      this,
+      'UnlikeMutation',
+      this.api,
+      this.props.likesTable
+    );
+    UnlikeMutation.resolver;
   }
 }

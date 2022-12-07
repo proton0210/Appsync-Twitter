@@ -3,7 +3,7 @@ import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import * as path from 'path';
 import { Construct } from 'constructs';
 
-export class NestedTimelinePage extends Construct {
+export class NestedUnhydratedTweetsPage extends Construct {
   public api: appsync.GraphqlApi;
   public tweetsTable: cdk.aws_dynamodb.Table;
   public resolver: appsync.Resolver;
@@ -17,28 +17,28 @@ export class NestedTimelinePage extends Construct {
     super(scope, id);
     this.api = api;
     this.tweetsTable = tweetsTable;
-    this.resolver = this.createNestedTimelinePageResolver();
+    this.resolver = this.createNestedUnhydratedTweetsPageResolver();
   }
 
-  public createNestedTimelinePageResolver() {
+  public createNestedUnhydratedTweetsPageResolver() {
     return this.api
       .addDynamoDbDataSource(
-        'tweetsTableNestedTimelinePageQuery',
+        'UnhydratedTweetsPage',
         this.tweetsTable
       )
       .createResolver({
-        typeName: 'TimelinePage',
+        typeName: 'UnhydratedTweetsPage',
         fieldName: 'tweets',
         requestMappingTemplate: appsync.MappingTemplate.fromFile(
           path.join(
             __dirname,
-            '../resolvers/query/Nested/TimelinePage/request.vtl'
+            '../resolvers/query/Nested/UnhydratedTweetsPage/request.vtl'
           )
         ),
         responseMappingTemplate: appsync.MappingTemplate.fromFile(
           path.join(
             __dirname,
-            '../resolvers/query/Nested/TimelinePage/response.vtl'
+            '../resolvers/query/Nested/UnhydratedTweetsPage/response.vtl'
           )
         )
       });
