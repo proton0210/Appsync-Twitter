@@ -1,3 +1,6 @@
+import { Retweet } from './Constructs/RetweetConstruct';
+import { NestedOtherProfile } from './Constructs/Nested_OtherProfileTweet';
+import { NestedMyProfile } from './Constructs/Nested_MyProfileTweet';
 import { GetLikes } from './Constructs/GetLikesConstruct';
 import { Unlike } from './Constructs/UnlikeConstruct';
 import { NestedLiked } from './Constructs/NestedLiked';
@@ -97,7 +100,21 @@ export class ApiStack extends cdk.Stack {
       this.props.tweetsTable
     ).resolver;
 
-    new NestedLiked(this, 'NestedLiked', this.api, this.props.likesTable);
+    new NestedLiked(this, 'NestedLiked', this.api, this.props.likesTable)
+      .resolver;
+    new NestedMyProfile(
+      this,
+      'NestedMyProfile',
+      this.api,
+      this.props.tweetsTable
+    ).resolver;
+
+    new NestedOtherProfile(
+      this,
+      'NestedOtherProfile',
+      this.api,
+      this.props.tweetsTable
+    ).resolver;
   }
 
   // id string should be unique for each construct
@@ -115,6 +132,14 @@ export class ApiStack extends cdk.Stack {
     this.props.usersTable.grantFullAccess(tweetMutation.Tweetfunction);
     this.props.tweetsTable.grantFullAccess(tweetMutation.Tweetfunction);
     this.props.timelinesTable.grantFullAccess(tweetMutation.Tweetfunction);
+
+    //RetweetMutation
+    const retweetMutation = new Retweet(this, 'RetweetMutation', this.api);
+    retweetMutation.resolver;
+    this.props.usersTable.grantFullAccess(retweetMutation.Retweetfunction);
+    this.props.tweetsTable.grantFullAccess(retweetMutation.Retweetfunction);
+    this.props.timelinesTable.grantFullAccess(retweetMutation.Retweetfunction);
+    this.props.retweetsTable.grantFullAccess(retweetMutation.Retweetfunction);
 
     //Like Mutation
     // Manually have to add access in the service role from console for tweets and users table

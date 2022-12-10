@@ -118,7 +118,7 @@ describe('Given an authenticated user', () => {
       });
     });
 
-    describe('When he unlikes the tweet', () => {
+    describe('When he un likes the tweet', () => {
       beforeAll(async () => {
         await when.a_user_calls_unlike(user, tweet.id);
       });

@@ -6,4 +6,5 @@ export interface ApiStackProps extends cdk.StackProps {
   tweetsTable: cdk.aws_dynamodb.Table;
   timelinesTable: cdk.aws_dynamodb.Table;
   likesTable: cdk.aws_dynamodb.Table;
+  retweetsTable: cdk.aws_dynamodb.Table;
 }

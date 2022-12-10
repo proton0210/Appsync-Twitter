@@ -2,38 +2,39 @@ import * as cdk from 'aws-cdk-lib';
 import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import { Construct } from 'constructs';
 import * as path from 'path';
-export class Tweet extends Construct {
+export class Retweet extends Construct {
   public api: appsync.GraphqlApi;
   public resolver: appsync.Resolver;
 
   constructor(scope: Construct, id: string, api: appsync.GraphqlApi) {
     super(scope, id);
     this.api = api;
-    this.resolver = this.TweetResolver();
+    this.resolver = this.RetweetResolver();
   }
 
-  public Tweetfunction = new cdk.aws_lambda_nodejs.NodejsFunction(
+  public Retweetfunction = new cdk.aws_lambda_nodejs.NodejsFunction(
     this,
-    'TweetFunction',
+    'RetweetFunction',
     {
-      entry: path.join(__dirname, '../resolvers/mutations/Tweet/index.js'),
+      entry: path.join(__dirname, '../resolvers/mutations/Retweet/index.js'),
       handler: 'handler',
       memorySize: 128,
-      timeout: cdk.Duration.seconds(10),
+      timeout: cdk.Duration.seconds(20),
       environment: {
         USERS_TABLE: 'UsersTable',
         TWEETS_TABLE: 'TweetsTable',
-        TIMELINES_TABLE: 'TimelinesTable'
+        TIMELINES_TABLE: 'TimelinesTable',
+        RETWEETS_TABLE: 'RetweetsTable'
       }
     }
   );
 
-  public TweetResolver() {
-    return new appsync.Resolver(this, 'TweetResolver', {
+  public RetweetResolver() {
+    return new appsync.Resolver(this, 'RetweetResolver', {
       api: this.api,
       typeName: 'Mutation',
-      fieldName: 'tweet',
-      dataSource: this.api.addLambdaDataSource('Tweet', this.Tweetfunction)
+      fieldName: 'retweet',
+      dataSource: this.api.addLambdaDataSource('Retweet', this.Retweetfunction)
     });
   }
 }

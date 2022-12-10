@@ -29,7 +29,8 @@ const apiStack = new ApiStack(app, 'ApiStack', {
   usersTable: dataBaseStack.usersTable.table,
   tweetsTable: dataBaseStack.tweetsTable.table,
   timelinesTable: dataBaseStack.timelinesTable.table,
-  likesTable: dataBaseStack.likesTable.table
+  likesTable: dataBaseStack.likesTable.table,
+  retweetsTable: dataBaseStack.retweetTable.table
 });
 
 const storageStack = new StorageStack(app, 'StorageStack', {
