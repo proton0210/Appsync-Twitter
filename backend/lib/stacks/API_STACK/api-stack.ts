@@ -1,3 +1,5 @@
+import { NestedRetweetOf } from './Constructs/NestedRetweetOf';
+import { NestedRetweetProfile } from './Constructs/Nested_RetweetProfile';
 import { Retweet } from './Constructs/RetweetConstruct';
 import { NestedOtherProfile } from './Constructs/Nested_OtherProfileTweet';
 import { NestedMyProfile } from './Constructs/Nested_MyProfileTweet';
@@ -112,6 +114,20 @@ export class ApiStack extends cdk.Stack {
     new NestedOtherProfile(
       this,
       'NestedOtherProfile',
+      this.api,
+      this.props.tweetsTable
+    ).resolver;
+
+    new NestedRetweetProfile(
+      this,
+      'NestedRetweetProfile',
+      this.api,
+      this.props.usersTable
+    ).resolver;
+
+    new NestedRetweetOf(
+      this,
+      'NestedRetweetOf',
       this.api,
       this.props.tweetsTable
     ).resolver;
