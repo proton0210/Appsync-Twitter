@@ -191,6 +191,22 @@ const we_invoke_tweet = async (username, text) => {
   return await handler(event, context);
 };
 
+const we_invoke_retweet = async (username, tweetId) => {
+  const handler =
+    require('../../lib/stacks/API_STACK/resolvers/mutations/Retweet/index').handler;
+  const context = {};
+  const event = {
+    identity: {
+      username
+    },
+    arguments: {
+      tweetId
+    }
+  };
+
+  return await handler(event, context);
+};
+
 /*
  * This flow should automatically trigger the ConfirmSignUpTrigger function
  */
@@ -443,6 +459,7 @@ const a_user_calls_getLikes = async (user, userId, limit, nextToken) => {
 
   return result;
 };
+
 module.exports = {
   we_invoke_confirm_user_signup,
   a_user_signs_up,
@@ -452,6 +469,7 @@ module.exports = {
   we_invoke_getImageUploadUrl,
   a_user_calls_getImageUploadUrl,
   we_invoke_tweet,
+  we_invoke_retweet,
   a_user_calls_tweet,
   a_user_calls_getTweets,
   a_user_calls_getMyTimeline,
