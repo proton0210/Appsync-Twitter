@@ -79,6 +79,7 @@ module.exports.handler = async (event) => {
   ];
 
   console.log(`creator: [${tweet.creator}]; username: [${username}]`);
+  // If user didn't retweet their own tweet, add it to their timeline
   if (tweet.creator !== username) {
     transactItems.push({
       Put: {

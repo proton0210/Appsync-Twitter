@@ -5,6 +5,7 @@ export class RetweetsTable extends Construct {
   public table: cdk.aws_dynamodb.Table;
   constructor(scope: Construct, id: string) {
     super(scope, id);
+    // Need to store who has retweeted which tweet.
 
     const table = new cdk.aws_dynamodb.Table(this, 'RetweetsTable', {
       partitionKey: {
