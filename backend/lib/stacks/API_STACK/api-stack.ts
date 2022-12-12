@@ -21,6 +21,7 @@ import { EditMyProfile } from './Constructs/EditMyProfileConstruct';
 import { GetImageUploadURL } from './Constructs/GetImageUploadUrlConstruct';
 import { GetTweetsResolver } from './Constructs/GetTweetsConstuct';
 import { NestedProfileTweet } from './Constructs/NestedProfile_Type_Tweet';
+import { UnRetweet } from './Constructs/UnRetweetConstruct';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -164,6 +165,22 @@ export class ApiStack extends cdk.Stack {
     this.props.tweetsTable.grantFullAccess(retweetMutation.Retweetfunction);
     this.props.timelinesTable.grantFullAccess(retweetMutation.Retweetfunction);
     this.props.retweetsTable.grantFullAccess(retweetMutation.Retweetfunction);
+
+    //UnRetweetMutation
+    const unretweetMutation = new UnRetweet(
+      this,
+      'UnRetweetMutation',
+      this.api
+    );
+    unretweetMutation.resolver;
+    this.props.usersTable.grantFullAccess(unretweetMutation.UnRetweetFunction);
+    this.props.tweetsTable.grantFullAccess(unretweetMutation.UnRetweetFunction);
+    this.props.timelinesTable.grantFullAccess(
+      unretweetMutation.UnRetweetFunction
+    );
+    this.props.retweetsTable.grantFullAccess(
+      unretweetMutation.UnRetweetFunction
+    );
 
     //Like Mutation
     // Manually have to add access in the service role from console for tweets and users table
