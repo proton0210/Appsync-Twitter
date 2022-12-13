@@ -89,6 +89,42 @@ fragment retweetFields on Retweet {
     ... on Tweet {
       ... tweetFields
     }
+
+    ... on Reply {
+      ... replyFields
+    }
+  }
+}
+`
+
+const replyFragment = `
+fragment replyFields on Reply {
+  id
+  profile {
+    ... iProfileFields
+  }
+  createdAt
+  text
+  replies
+  likes
+  retweets
+  retweeted
+  liked
+  inReplyToTweet {
+    id
+    profile {
+      ... iProfileFields
+    }
+    createdAt
+    ... on Tweet {
+      replies
+    }
+    ... on Reply {
+      replies
+    }
+  }
+  inReplyToUsers {
+    ... iProfileFields
   }
 }
 `;
@@ -109,6 +145,7 @@ registerFragment('otherProfileFields', otherProfileFragment);
 registerFragment('iProfileFields', iProfileFragment);
 registerFragment('tweetFields', tweetFragment);
 registerFragment('retweetFields', retweetFragment);
+registerFragment('replyFields', replyFragment);
 registerFragment('iTweetFields', iTweetFragment);
 
 const we_invoke_confirm_user_signup = async (username, name, email) => {
@@ -556,6 +593,30 @@ const a_user_calls_unretweet = async (user, tweetId) => {
   return result;
 };
 
+const a_user_calls_reply = async (user, tweetId, text) => {
+  const reply = `mutation reply($tweetId: ID!, $text: String!) {
+    reply(tweetId: $tweetId, text: $text) {
+      ... replyFields
+    }
+  }`;
+  const variables = {
+    tweetId,
+    text
+  };
+
+  const data = await GraphQL(
+    process.env.API_URL,
+    reply,
+    variables,
+    user.accessToken
+  );
+  const result = data.reply;
+
+  console.log(`[${user.username}] - replied to tweet [${tweetId}]`);
+
+  return result;
+};
+
 module.exports = {
   we_invoke_confirm_user_signup,
   a_user_signs_up,
@@ -575,5 +636,6 @@ module.exports = {
   a_user_calls_unlike,
   a_user_calls_getLikes,
   a_user_calls_retweet,
-  a_user_calls_unretweet
+  a_user_calls_unretweet,
+  a_user_calls_reply
 };

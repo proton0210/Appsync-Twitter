@@ -26,6 +26,8 @@ import { GetImageUploadURL } from './Constructs/GetImageUploadUrlConstruct';
 import { GetTweetsResolver } from './Constructs/GetTweetsConstuct';
 import { NestedProfileTweet } from './Constructs/NestedProfile_Type_Tweet';
 import { UnRetweet } from './Constructs/UnRetweetConstruct';
+import { NestedReplyRetweeted } from './Constructs/NestedReplyRetweeted';
+import { NestedReplyLike } from './Constructs/NestedReplyLike';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -164,6 +166,20 @@ export class ApiStack extends cdk.Stack {
       'NestedInReplyToUsers',
       this.api,
       this.props.usersTable
+    ).resolver;
+
+    new NestedReplyRetweeted(
+      this,
+      'NestedReplyRetweeted',
+      this.api,
+      this.props.retweetsTable
+    ).resolver;
+
+    new NestedReplyLike(
+      this,
+      'NestedReplyLike',
+      this.api,
+      this.props.likesTable
     ).resolver;
   }
 
