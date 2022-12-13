@@ -8,7 +8,7 @@ describe('UnhydratedTweetsPage.tweets.request template', () => {
   it('Should return empty array if source.tweets is empty', () => {
     const templatePath = path.resolve(
       __dirname,
-      '../../../lib/stacks/API_STACK/resolvers/query/Nested/TimelinePage/request.vtl'
+      '../../../lib/stacks/API_STACK/resolvers/query/Nested/UnhydratedTweetsPage/request.vtl'
     );
 
     const username = chance.guid();
@@ -26,7 +26,7 @@ describe('UnhydratedTweetsPage.tweets.request template', () => {
   it('Should convert timeline tweets to BatchGetItem keys', () => {
     const templatePath = path.resolve(
       __dirname,
-      '../../../lib/stacks/API_STACK/resolvers/query/Nested/TimelinePage/request.vtl'
+      '../../../lib/stacks/API_STACK/resolvers/query/Nested/UnhydratedTweetsPage/request.vtl'
     );
 
     const username = chance.guid();

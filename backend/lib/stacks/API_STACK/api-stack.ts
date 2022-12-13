@@ -1,3 +1,6 @@
+import { NestedInReplyToUsers } from './Constructs/NestedInReplyToUsers';
+import { NestedInReplyToTweet } from './Constructs/NestedInReplToTweet';
+import { NestedReplyProfile } from './Constructs/NestedReplyProfile';
 import { Reply } from './Constructs/ReplyConstruct';
 import { NestedTweetRetweeted } from './Constructs/NestedTweetRetweeted';
 import { NestedRetweetOf } from './Constructs/NestedRetweetOf';
@@ -140,6 +143,27 @@ export class ApiStack extends cdk.Stack {
       'NestedTweetRetweeted',
       this.api,
       this.props.retweetsTable
+    ).resolver;
+
+    new NestedReplyProfile(
+      this,
+      'NestedReplyProfile',
+      this.api,
+      this.props.usersTable
+    ).resolver;
+
+    new NestedInReplyToTweet(
+      this,
+      'NestedInReplyToTweet',
+      this.api,
+      this.props.tweetsTable
+    ).resolver;
+
+    new NestedInReplyToUsers(
+      this,
+      'NestedInReplyToUsers',
+      this.api,
+      this.props.usersTable
     ).resolver;
   }
 
