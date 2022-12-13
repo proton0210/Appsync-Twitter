@@ -244,6 +244,23 @@ const we_invoke_unretweet = async (username, tweetId) => {
   return await handler(event, context);
 };
 
+const we_invoke_reply = async (username, tweetId, text) => {
+  const handler =
+    require('../../lib/stacks/API_STACK/resolvers/mutations/Reply/index').handler;
+  const context = {};
+  const event = {
+    identity: {
+      username
+    },
+    arguments: {
+      tweetId,
+      text
+    }
+  };
+
+  return await handler(event, context);
+};
+
 /*
  * This flow should automatically trigger the ConfirmSignUpTrigger function
  */
@@ -550,6 +567,7 @@ module.exports = {
   we_invoke_tweet,
   we_invoke_retweet,
   we_invoke_unretweet,
+  we_invoke_reply,
   a_user_calls_tweet,
   a_user_calls_getTweets,
   a_user_calls_getMyTimeline,

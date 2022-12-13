@@ -40,6 +40,18 @@ export class TweetsTable extends Construct {
       },
       projectionType: cdk.aws_dynamodb.ProjectionType.ALL
     });
+    table.addGlobalSecondaryIndex({
+      indexName: 'repliesForTweet',
+      partitionKey: {
+        name: 'inReplyToTweetId',
+        type: cdk.aws_dynamodb.AttributeType.STRING
+      },
+      sortKey: {
+        name: 'id',
+        type: cdk.aws_dynamodb.AttributeType.STRING
+      },
+      projectionType: cdk.aws_dynamodb.ProjectionType.ALL
+    });
 
     cdk.Tags.of(table).add('Name', 'TweetsTable');
 

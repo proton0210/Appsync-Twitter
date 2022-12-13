@@ -1,3 +1,4 @@
+import { Reply } from './Constructs/ReplyConstruct';
 import { NestedTweetRetweeted } from './Constructs/NestedTweetRetweeted';
 import { NestedRetweetOf } from './Constructs/NestedRetweetOf';
 import { NestedRetweetProfile } from './Constructs/Nested_RetweetProfile';
@@ -181,6 +182,13 @@ export class ApiStack extends cdk.Stack {
     this.props.retweetsTable.grantFullAccess(
       unretweetMutation.UnRetweetFunction
     );
+
+    //ReplyMutation
+    const replyMutation = new Reply(this, 'ReplyMutation', this.api);
+    replyMutation.resolver;
+    this.props.usersTable.grantFullAccess(replyMutation.Replyfunction);
+    this.props.tweetsTable.grantFullAccess(replyMutation.Replyfunction);
+    this.props.timelinesTable.grantFullAccess(replyMutation.Replyfunction);
 
     //Like Mutation
     // Manually have to add access in the service role from console for tweets and users table
