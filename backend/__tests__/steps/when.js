@@ -134,8 +134,13 @@ fragment iTweetFields on ITweet {
   ... on Tweet {
     ... tweetFields
   }
+
   ... on Retweet {
     ... retweetFields
+  }
+
+  ... on Reply {
+    ... replyFields
   }
 }
 `;

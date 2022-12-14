@@ -17,7 +17,7 @@ type Query {
   getLikes(userId: ID!, limit: Int!, nextToken: String): UnhydratedTweetsPage!
 
   getFollowers(userId: ID!, limit: Int!, nextToken: String): ProfilesPage!
-
+  
   getFollowing(userId: ID!, limit: Int!, nextToken: String): ProfilesPage!
 }
 
@@ -27,17 +27,17 @@ type Mutation {
   tweet(text: String!): Tweet!
 
   like(tweetId: ID!): Boolean!
-
+  
   unlike(tweetId: ID!): Boolean!
-
-  retweet(tweetId: ID!): Boolean!
-
+  
+  retweet(tweetId: ID!): Retweet!
+  
   unretweet(tweetId: ID!): Boolean!
 
   reply(tweetId: ID!, text: String!): Reply!
 
   follow(userId: ID!): Boolean!
-
+  
   unfollow(userId: ID!): Boolean!
 }
 
@@ -160,3 +160,5 @@ type ProfilesPage {
   profiles: [IProfile!]
   nextToken: String
 }
+
+
