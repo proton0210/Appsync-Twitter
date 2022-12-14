@@ -207,7 +207,17 @@ const we_invoke_getImageUploadUrl = async (
 const a_user_calls_tweet = async (user, text) => {
   const tweet = `mutation tweet($text: String!) {
     tweet(text: $text) {
-      ... tweetFields
+      id
+      profile {
+        ... iProfileFields
+      }
+      createdAt
+      text
+      replies
+      likes
+      retweets
+      retweeted
+      liked
     }
   }`;
   const variables = {
