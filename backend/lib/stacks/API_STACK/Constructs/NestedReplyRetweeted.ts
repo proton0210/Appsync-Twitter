@@ -33,13 +33,13 @@ export class NestedReplyRetweeted extends Construct {
         requestMappingTemplate: appsync.MappingTemplate.fromFile(
           path.join(
             __dirname,
-            '../resolvers/query/Nested/Retweeted/request.vtl'
+            '../resolvers/query/Nested/NestedReplyRetweeted/request.vtl'
           )
         ),
         responseMappingTemplate: appsync.MappingTemplate.fromFile(
           path.join(
             __dirname,
-            '../resolvers/query/Nested/Retweeted/response.vtl'
+            '../resolvers/query/Nested/NestedReplyRetweeted/response.vtl'
           )
         )
       });

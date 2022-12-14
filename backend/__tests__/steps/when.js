@@ -95,7 +95,7 @@ fragment retweetFields on Retweet {
     }
   }
 }
-`
+`;
 
 const replyFragment = `
 fragment replyFields on Reply {
@@ -202,17 +202,7 @@ const we_invoke_getImageUploadUrl = async (
 const a_user_calls_tweet = async (user, text) => {
   const tweet = `mutation tweet($text: String!) {
     tweet(text: $text) {
-      id
-      profile {
-        ... iProfileFields
-      }
-      createdAt
-      text
-      replies
-      likes
-      retweets
-      retweeted
-      liked
+      ... tweetFields
     }
   }`;
   const variables = {
@@ -553,7 +543,9 @@ const a_user_calls_getLikes = async (user, userId, limit, nextToken) => {
 
 const a_user_calls_retweet = async (user, tweetId) => {
   const retweet = `mutation retweet($tweetId: ID!) {
-    retweet(tweetId: $tweetId)
+    retweet(tweetId: $tweetId) {
+      ... retweetFields
+    }
   }`;
   const variables = {
     tweetId

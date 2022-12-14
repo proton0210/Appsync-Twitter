@@ -21,7 +21,7 @@ export class NestedReplyLike extends Construct {
   }
 
   public createNestedReplyLikeResolver() {
-        // we can use the same resolvers as NestedLike
+    // we can use the same resolvers as NestedLike
 
     return this.api
       .addDynamoDbDataSource('nestedReplyLikesTable', this.likesTable)
@@ -29,10 +29,16 @@ export class NestedReplyLike extends Construct {
         typeName: 'Reply',
         fieldName: 'liked',
         requestMappingTemplate: appsync.MappingTemplate.fromFile(
-          path.join(__dirname, '../resolvers/query/Nested/Liked/request.vtl')
+          path.join(
+            __dirname,
+            '../resolvers/query/Nested/NestedReplyLike/request.vtl'
+          )
         ),
         responseMappingTemplate: appsync.MappingTemplate.fromFile(
-          path.join(__dirname, '../resolvers/query/Nested/Liked/response.vtl')
+          path.join(
+            __dirname,
+            '../resolvers/query/Nested/NestedReplyLike/response.vtl'
+          )
         )
       });
   }
