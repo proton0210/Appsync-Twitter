@@ -1,9 +1,8 @@
 import * as React from 'react'
-
 const App:React.FC = () => {
   return (
     <div>
-      <h1>Hello World</h1>
+      <h1>React App</h1>
     </div>
   )
 }
