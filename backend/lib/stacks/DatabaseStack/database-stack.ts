@@ -1,3 +1,4 @@
+import { RelationshipsTable } from './Constructs/RelationshipsTable';
 import { RetweetsTable } from './Constructs/RetweetsTable';
 import { LikesTable } from './Constructs/LikesTable';
 import { TweetsTable } from './Constructs/TweetsTable';
@@ -13,6 +14,7 @@ export class DataBaseStack extends cdk.Stack {
   public timelinesTable: TimelinesTable;
   public likesTable: LikesTable;
   public retweetTable: RetweetsTable;
+  public relationShipsTable: RelationshipsTable;
   public props: DataBaseStackProps;
 
   constructor(scope: Construct, id: string, props: DataBaseStackProps) {
@@ -27,6 +29,7 @@ export class DataBaseStack extends cdk.Stack {
     this.initializeTimeLinesTableWithAccess();
     this.initializeLikesTableWithAccess();
     this.initializeRetweetTableWithAccess();
+    this.initializeRelationshipsTableWithAccess();
   }
 
   initializeUserTableWithAccess() {
@@ -47,5 +50,12 @@ export class DataBaseStack extends cdk.Stack {
   }
   initializeRetweetTableWithAccess() {
     this.retweetTable = new RetweetsTable(this, 'RetweetsTable');
+  }
+
+  initializeRelationshipsTableWithAccess() {
+    this.relationShipsTable = new RelationshipsTable(
+      this,
+      'RelationshipsTable'
+    );
   }
 }

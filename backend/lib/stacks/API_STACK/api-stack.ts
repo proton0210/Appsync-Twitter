@@ -28,6 +28,7 @@ import { NestedProfileTweet } from './Constructs/NestedProfile_Type_Tweet';
 import { UnRetweet } from './Constructs/UnRetweetConstruct';
 import { NestedReplyRetweeted } from './Constructs/NestedReplyRetweeted';
 import { NestedReplyLike } from './Constructs/NestedReplyLike';
+import { Follow } from './Constructs/FollowConstruct';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -250,5 +251,14 @@ export class ApiStack extends cdk.Stack {
       this.props.likesTable
     );
     UnlikeMutation.resolver;
+
+    //Follow Mutation
+    // Manually add access in the service role from console for users table
+    const FollowMutation = new Follow(
+      this,
+      'FollowMutation',
+      this.api,
+      this.props.relationshipsTable
+    ).resolver;
   }
 }
