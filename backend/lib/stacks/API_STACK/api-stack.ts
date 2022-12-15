@@ -1,3 +1,4 @@
+import { NestedFollowingOtherProfile } from './Constructs/NestedFollowingProfie';
 import { NestedInReplyToUsers } from './Constructs/NestedInReplyToUsers';
 import { NestedInReplyToTweet } from './Constructs/NestedInReplToTweet';
 import { NestedReplyProfile } from './Constructs/NestedReplyProfile';
@@ -29,6 +30,8 @@ import { UnRetweet } from './Constructs/UnRetweetConstruct';
 import { NestedReplyRetweeted } from './Constructs/NestedReplyRetweeted';
 import { NestedReplyLike } from './Constructs/NestedReplyLike';
 import { Follow } from './Constructs/FollowConstruct';
+import { NestedFollowedByOtherProfile } from './Constructs/NestedFollowedByProfile';
+import { GetProfile } from './Constructs/GetProfileConstruct';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -93,6 +96,9 @@ export class ApiStack extends cdk.Stack {
     ).resolver;
 
     new GetLikes(this, 'QueryGetLikesResolver', this.api, this.props.likesTable)
+      .resolver;
+
+    new GetProfile(this, 'QueryGetProfile', this.api, this.props.usersTable)
       .resolver;
   }
 
@@ -181,6 +187,20 @@ export class ApiStack extends cdk.Stack {
       'NestedReplyLike',
       this.api,
       this.props.likesTable
+    ).resolver;
+
+    new NestedFollowingOtherProfile(
+      this,
+      'NestedFollowingOtherProfile',
+      this.api,
+      this.props.relationshipsTable
+    ).resolver;
+
+    new NestedFollowedByOtherProfile(
+      this,
+      'NestedFollowedByOtherProfile',
+      this.api,
+      this.props.relationshipsTable
     ).resolver;
   }
 
