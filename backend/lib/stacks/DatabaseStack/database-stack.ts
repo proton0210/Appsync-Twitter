@@ -4,6 +4,7 @@ import { LikesTable } from './Constructs/LikesTable';
 import { TweetsTable } from './Constructs/TweetsTable';
 import { DataBaseStackProps } from './../../../Interfaces/database-interface';
 import * as cdk from 'aws-cdk-lib';
+import * as eventsources from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Construct } from 'constructs';
 import { UsersTable } from './Constructs/UsersTable';
 import { TimelinesTable } from './Constructs/TimelinesTable';
@@ -39,6 +40,11 @@ export class DataBaseStack extends cdk.Stack {
 
   initializeTweetsTableWithAccess() {
     this.tweetsTable = new TweetsTable(this, 'TweetsTable');
+    this.props.distributedTweet.addEventSource(
+      new eventsources.DynamoEventSource(this.tweetsTable.table, {
+        startingPosition: cdk.aws_lambda.StartingPosition.LATEST
+      })
+    );
   }
 
   initializeTimeLinesTableWithAccess() {

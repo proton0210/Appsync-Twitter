@@ -11,7 +11,7 @@ export class TweetsTable extends Construct {
         name: 'id',
         type: cdk.aws_dynamodb.AttributeType.STRING
       },
-
+      stream: cdk.aws_dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
       billingMode: cdk.aws_dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       tableName: 'TweetsTable'
@@ -52,7 +52,6 @@ export class TweetsTable extends Construct {
       },
       projectionType: cdk.aws_dynamodb.ProjectionType.ALL
     });
-
     cdk.Tags.of(table).add('Name', 'TweetsTable');
 
     //member variable for API stack
