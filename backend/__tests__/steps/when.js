@@ -184,6 +184,13 @@ const we_invoke_confirm_user_signup = async (username, name, email) => {
   await handler(event, context);
 };
 
+const we_invoke_distributeTweets = async (event) => {
+  const handler =
+    require('../../lib/stacks/ComputeStack/Functions/DistributeTweets/index').handler;
+  const context = {};
+  return await handler(event, context);
+};
+
 const we_invoke_getImageUploadUrl = async (
   username,
   extension,
@@ -209,17 +216,7 @@ const we_invoke_getImageUploadUrl = async (
 const a_user_calls_tweet = async (user, text) => {
   const tweet = `mutation tweet($text: String!) {
     tweet(text: $text) {
-      id
-      profile {
-        ... iProfileFields
-      }
-      createdAt
-      text
-      replies
-      likes
-      retweets
-      retweeted
-      liked
+      ... tweetFields
     }
   }`;
   const variables = {
@@ -678,6 +675,7 @@ const a_user_calls_follow = async (user, userId) => {
 
 module.exports = {
   we_invoke_confirm_user_signup,
+  we_invoke_distributeTweets,
   a_user_signs_up,
   we_invoke_an_appsync_template,
   a_user_calls_getMyProfile,
