@@ -191,6 +191,14 @@ const we_invoke_distributeTweets = async (event) => {
   return await handler(event, context);
 };
 
+const we_invoke_distributeTweetsToFollower = async (event) => {
+  const handler =
+    require('../../lib/stacks/ComputeStack/Functions/DistributeTweetsToFollowers/index').handler;
+
+  const context = {};
+  return await handler(event, context);
+};
+
 const we_invoke_getImageUploadUrl = async (
   username,
   extension,
@@ -682,6 +690,7 @@ module.exports = {
   a_user_calls_getProfile,
   a_user_calls_editMyProfile,
   we_invoke_getImageUploadUrl,
+  we_invoke_distributeTweetsToFollower,
   a_user_calls_getImageUploadUrl,
   we_invoke_tweet,
   we_invoke_retweet,

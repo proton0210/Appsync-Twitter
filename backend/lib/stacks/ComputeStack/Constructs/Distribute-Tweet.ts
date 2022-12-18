@@ -18,7 +18,8 @@ export class DistributeTweet extends Construct {
         timeout: cdk.Duration.seconds(30),
         environment: {
           RELATIONSHIPS_TABLE: 'RelationshipsTable',
-          TIMELINES_TABLE: 'TimelinesTable'
+          TIMELINES_TABLE: 'TimelinesTable',
+          MAX_TWEETS: '100'
         }
       }
     );

@@ -11,6 +11,7 @@ export class RelationshipsTable extends Construct {
         name: 'userId',
         type: cdk.aws_dynamodb.AttributeType.STRING
       },
+      stream: cdk.aws_dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
       sortKey: {
         //opaque key for the relationship
         name: 'sk',

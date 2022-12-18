@@ -40,6 +40,9 @@ export class DataBaseStack extends cdk.Stack {
 
   initializeTweetsTableWithAccess() {
     this.tweetsTable = new TweetsTable(this, 'TweetsTable');
+    this.tweetsTable.table.grantFullAccess(
+      this.props.distributeTweetWithFollowers
+    );
     this.props.distributedTweet.addEventSource(
       new eventsources.DynamoEventSource(this.tweetsTable.table, {
         startingPosition: cdk.aws_lambda.StartingPosition.LATEST
@@ -49,6 +52,10 @@ export class DataBaseStack extends cdk.Stack {
 
   initializeTimeLinesTableWithAccess() {
     this.timelinesTable = new TimelinesTable(this, 'TimelinesTable');
+    this.timelinesTable.table.grantFullAccess(this.props.distributedTweet);
+    this.timelinesTable.table.grantFullAccess(
+      this.props.distributeTweetWithFollowers
+    );
   }
 
   initializeLikesTableWithAccess() {
@@ -62,6 +69,15 @@ export class DataBaseStack extends cdk.Stack {
     this.relationShipsTable = new RelationshipsTable(
       this,
       'RelationshipsTable'
+    );
+    this.relationShipsTable.table.grantFullAccess(this.props.distributedTweet);
+    this.relationShipsTable.table.grantFullAccess(
+      this.props.distributeTweetWithFollowers
+    );
+    this.props.distributeTweetWithFollowers.addEventSource(
+      new eventsources.DynamoEventSource(this.relationShipsTable.table, {
+        startingPosition: cdk.aws_lambda.StartingPosition.LATEST
+      })
     );
   }
 }

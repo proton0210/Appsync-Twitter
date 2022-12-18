@@ -22,7 +22,8 @@ const userPoolStack = new UserPoolStack(app, 'UserPoolStack', {
 
 const dataBaseStack = new DataBaseStack(app, 'DataBaseStack', {
   postConfirmationHook: computeStack.postConfirmationHook,
-  distributedTweet: computeStack.distributedTweet
+  distributedTweet: computeStack.distributedTweet,
+  distributeTweetWithFollowers: computeStack.distributeTweetToFollowers
 });
 
 const apiStack = new ApiStack(app, 'ApiStack', {
