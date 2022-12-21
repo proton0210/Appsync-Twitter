@@ -29,7 +29,7 @@ export class GetFollowing extends Construct {
         api: this.api,
         dataSource: this.api.addDynamoDbDataSource(
           'RelationShipsTableForGetFollowingPipeline',
-          this.usersTable
+          this.relationShipsTable
         ),
         name: 'GetFollowing',
         description: 'Get all followers of a user pipeline',
@@ -48,7 +48,7 @@ export class GetFollowing extends Construct {
         api: this.api,
         dataSource: this.api.addDynamoDbDataSource(
           'UsersTableForGetFollowingPipeline',
-          this.relationShipsTable
+          this.usersTable
         ),
         name: 'hydrateFollowers',
         description: 'Get all followers of a user',

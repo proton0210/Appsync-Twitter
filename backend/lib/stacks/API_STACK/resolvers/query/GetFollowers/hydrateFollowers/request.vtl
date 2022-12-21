@@ -13,7 +13,7 @@
   "version" : "2018-05-29",
   "operation" : "BatchGetItem",
   "tables" : {
-    "${UsersTable}": {
+    "UsersTable": {
       "keys": $util.toJson($users),
       "consistentRead": false
     }

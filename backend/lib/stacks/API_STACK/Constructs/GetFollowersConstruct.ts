@@ -21,7 +21,7 @@ export class GetFollowers extends Construct {
     this.resolver = this.createGetFollowers();
   }
   public createGetFollowers() {
-    // create a  apssync Function
+    // create a  appsync Function
     const getFollowersFunction = new appsync.AppsyncFunction(
       this,
       'GetFollowersFunction',
@@ -29,7 +29,7 @@ export class GetFollowers extends Construct {
         api: this.api,
         dataSource: this.api.addDynamoDbDataSource(
           'RelationShipsTableForGetfollowersPipeline',
-          this.usersTable
+          this.relationShipsTable
         ),
         name: 'getFollowers',
         description: 'Get all followers of a user pipeline',
@@ -48,7 +48,7 @@ export class GetFollowers extends Construct {
         api: this.api,
         dataSource: this.api.addDynamoDbDataSource(
           'UsersTableForGetfollowersPipeline',
-          this.relationShipsTable
+          this.usersTable
         ),
         name: 'hydrateFollowers',
         description: 'Get all followers of a user',

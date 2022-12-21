@@ -680,6 +680,59 @@ const a_user_calls_follow = async (user, userId) => {
 
   return result;
 };
+const a_user_calls_getFollowers = async (user, userId, limit, nextToken) => {
+  const getFollowers = `query getFollowers($userId: ID!, $limit: Int!, $nextToken: String) {
+    getFollowers(userId: $userId, limit: $limit, nextToken: $nextToken) {
+      profiles {
+        ... iProfileFields
+      }
+    }
+  }`;
+  const variables = {
+    userId,
+    limit,
+    nextToken
+  };
+
+  const data = await GraphQL(
+    process.env.API_URL,
+    getFollowers,
+    variables,
+    user.accessToken
+  );
+  const result = data.getFollowers;
+
+  console.log(`[${user.username}] - fetched followers`);
+
+  return result;
+};
+
+const a_user_calls_getFollowing = async (user, userId, limit, nextToken) => {
+  const getFollowing = `query getFollowing($userId: ID!, $limit: Int!, $nextToken: String) {
+    getFollowing(userId: $userId, limit: $limit, nextToken: $nextToken) {
+      profiles {
+        ... iProfileFields
+      }
+    }
+  }`;
+  const variables = {
+    userId,
+    limit,
+    nextToken
+  };
+
+  const data = await GraphQL(
+    process.env.API_URL,
+    getFollowing,
+    variables,
+    user.accessToken
+  );
+  const result = data.getFollowing;
+
+  console.log(`[${user.username}] - fetched following`);
+
+  return result;
+};
 
 const a_user_calls_unfollow = async (user, userId) => {
   const unfollow = `mutation unfollow($userId: ID!) {
@@ -727,5 +780,7 @@ module.exports = {
   a_user_calls_unretweet,
   a_user_calls_reply,
   a_user_calls_follow,
-  a_user_calls_unfollow
+  a_user_calls_unfollow,
+  a_user_calls_getFollowers,
+  a_user_calls_getFollowing
 };

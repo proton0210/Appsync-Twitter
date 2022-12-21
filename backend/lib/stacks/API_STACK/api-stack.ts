@@ -1,3 +1,4 @@
+import { GetFollowing } from './Constructs/GetFollowingConstruct';
 import { UnFollow } from './Constructs/UnfollowConstruct';
 import { NestedFollowingOtherProfile } from './Constructs/NestedFollowingProfie';
 import { NestedInReplyToUsers } from './Constructs/NestedInReplyToUsers';
@@ -107,6 +108,14 @@ export class ApiStack extends cdk.Stack {
     new GetFollowers(
       this,
       'QueryGetFollowers',
+      this.api,
+      this.props.relationshipsTable,
+      this.props.usersTable
+    ).resolver;
+
+    new GetFollowing(
+      this,
+      'QueryGetFollowing',
       this.api,
       this.props.relationshipsTable,
       this.props.usersTable
