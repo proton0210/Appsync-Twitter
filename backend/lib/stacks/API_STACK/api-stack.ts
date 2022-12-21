@@ -1,3 +1,4 @@
+import { UnFollow } from './Constructs/UnfollowConstruct';
 import { NestedFollowingOtherProfile } from './Constructs/NestedFollowingProfie';
 import { NestedInReplyToUsers } from './Constructs/NestedInReplyToUsers';
 import { NestedInReplyToTweet } from './Constructs/NestedInReplToTweet';
@@ -32,6 +33,7 @@ import { NestedReplyLike } from './Constructs/NestedReplyLike';
 import { Follow } from './Constructs/FollowConstruct';
 import { NestedFollowedByOtherProfile } from './Constructs/NestedFollowedByProfile';
 import { GetProfile } from './Constructs/GetProfileConstruct';
+import { GetFollowers } from './Constructs/GetFollowersConstruct';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -100,6 +102,15 @@ export class ApiStack extends cdk.Stack {
 
     new GetProfile(this, 'QueryGetProfile', this.api, this.props.usersTable)
       .resolver;
+
+    // This is pipeline resolver example
+    new GetFollowers(
+      this,
+      'QueryGetFollowers',
+      this.api,
+      this.props.relationshipsTable,
+      this.props.usersTable
+    ).resolver;
   }
 
   public nestedResolvers() {
@@ -277,6 +288,15 @@ export class ApiStack extends cdk.Stack {
     const FollowMutation = new Follow(
       this,
       'FollowMutation',
+      this.api,
+      this.props.relationshipsTable
+    ).resolver;
+
+    //Unfollow Mutation
+    // Manually add access in the service role from console for users table
+    const UnfollowMutation = new UnFollow(
+      this,
+      'UnfollowMutation',
       this.api,
       this.props.relationshipsTable
     ).resolver;
