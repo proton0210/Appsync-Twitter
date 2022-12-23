@@ -1,3 +1,4 @@
+import { AmplifyStack } from './../lib/stacks/AmplifyStack/amplify-stack';
 import { StorageStack } from './../lib/stacks/StorageStack/storage-stack';
 import { DataBaseStack } from './../lib/stacks/DatabaseStack/database-stack';
 import { ComputeStack } from './../lib/stacks/ComputeStack/compute-stack';
@@ -39,3 +40,4 @@ const apiStack = new ApiStack(app, 'ApiStack', {
 const storageStack = new StorageStack(app, 'StorageStack', {
   imageUploadFunction: apiStack.imageUploadFunction
 });
+const frontEndStack = new AmplifyStack(app, 'AmplifyStack');
