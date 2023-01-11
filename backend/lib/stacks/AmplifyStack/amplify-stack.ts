@@ -4,7 +4,8 @@ import {
   COGNITO_USER_POOL_ID,
   WEB_COGNITO_USER_POOL_CLIENT_ID,
   REGION,
-  GRAPHQL_URL
+  GRAPHQL_URL,
+  SECRET_ARN
 } from './../../../variables';
 import * as path from 'path';
 import * as cdk from 'aws-cdk-lib';
@@ -18,7 +19,7 @@ export class AmplifyStack extends cdk.Stack {
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
         owner: GITHUB_USER_NAME,
         repository: REPO_NAME,
-        oauthToken: cdk.SecretValue.secretsManager('github-appsync-token')
+        oauthToken: cdk.SecretValue.secretsManager('appsync-token')
       }),
       environmentVariables: {
         USER_POOL_ID: COGNITO_USER_POOL_ID,
@@ -26,6 +27,8 @@ export class AmplifyStack extends cdk.Stack {
         REGION: REGION,
         APPSYNC_API: GRAPHQL_URL
       }
+        
+
     });
     amplifyApp.addBranch('main');
   }

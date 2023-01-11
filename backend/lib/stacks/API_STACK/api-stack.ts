@@ -55,7 +55,9 @@ export class ApiStack extends cdk.Stack {
             userPool: props.userPool
           }
         }
-      }
+      },
+      
+
     });
     this.props = props;
     this.queries();
