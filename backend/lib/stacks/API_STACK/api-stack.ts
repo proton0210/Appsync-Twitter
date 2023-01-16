@@ -35,6 +35,7 @@ import { Follow } from './Constructs/FollowConstruct';
 import { NestedFollowedByOtherProfile } from './Constructs/NestedFollowedByProfile';
 import { GetProfile } from './Constructs/GetProfileConstruct';
 import { GetFollowers } from './Constructs/GetFollowersConstruct';
+import { Search } from './Constructs/SearchConstruct';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -55,9 +56,7 @@ export class ApiStack extends cdk.Stack {
             userPool: props.userPool
           }
         }
-      },
-      
-
+      }
     });
     this.props = props;
     this.queries();
@@ -122,6 +121,8 @@ export class ApiStack extends cdk.Stack {
       this.props.relationshipsTable,
       this.props.usersTable
     ).resolver;
+
+    new Search(this, 'QuerySearch', this.api).resolver;
   }
 
   public nestedResolvers() {
