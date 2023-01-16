@@ -36,6 +36,11 @@ export class DataBaseStack extends cdk.Stack {
   initializeUserTableWithAccess() {
     this.usersTable = new UsersTable(this, 'UsersTable');
     this.usersTable.table.grantFullAccess(this.props.postConfirmationHook);
+    this.props.syncUserstoAlgolia.addEventSource(
+      new eventsources.DynamoEventSource(this.usersTable.table, {
+        startingPosition: cdk.aws_lambda.StartingPosition.LATEST
+      })
+    );
   }
 
   initializeTweetsTableWithAccess() {
@@ -44,6 +49,12 @@ export class DataBaseStack extends cdk.Stack {
       this.props.distributeTweetWithFollowers
     );
     this.props.distributedTweet.addEventSource(
+      new eventsources.DynamoEventSource(this.tweetsTable.table, {
+        startingPosition: cdk.aws_lambda.StartingPosition.LATEST
+      })
+    );
+
+    this.props.syncTweetsToAlgolia.addEventSource(
       new eventsources.DynamoEventSource(this.tweetsTable.table, {
         startingPosition: cdk.aws_lambda.StartingPosition.LATEST
       })

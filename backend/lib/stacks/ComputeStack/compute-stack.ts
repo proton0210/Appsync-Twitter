@@ -1,3 +1,5 @@
+import { SyncTweetsToAlgolia } from './Constructs/SyncTweetsToAlgolia';
+import { SyncUsersToAlgolia } from './Constructs/SyncUsersToAlgolia';
 import { DistributeTweetsToFollowers } from './Constructs/Distribute-Tweet-To-Followers';
 import { DistributeTweet } from './Constructs/Distribute-Tweet';
 import { ConfirmUserSignUp } from './Constructs/confirm-user';
@@ -8,6 +10,9 @@ export class ComputeStack extends cdk.Stack {
   public readonly postConfirmationHook: cdk.aws_lambda_nodejs.NodejsFunction;
   public readonly distributedTweet: cdk.aws_lambda_nodejs.NodejsFunction;
   public readonly distributeTweetToFollowers: cdk.aws_lambda_nodejs.NodejsFunction;
+  public readonly syncUsersToAlgolia: cdk.aws_lambda_nodejs.NodejsFunction;
+  public readonly syncTweetsToAlgolia: cdk.aws_lambda_nodejs.NodejsFunction;
+
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     const confirmUserSignUpTrigger = new ConfirmUserSignUp(
@@ -20,9 +25,21 @@ export class ComputeStack extends cdk.Stack {
       'DistributeTweetToFollowers'
     );
 
+    const syncUsersToAlgolia = new SyncUsersToAlgolia(
+      this,
+      'SyncUsersToAlgolia'
+    );
+
+    const syncTweetsToAlgolia = new SyncTweetsToAlgolia(
+      this,
+      'SyncTweetsToAlgolia'
+    );
+
     this.postConfirmationHook = confirmUserSignUpTrigger.confirmUserSignUp;
     this.distributedTweet = distributedTweet.DistributeTweet;
     this.distributeTweetToFollowers =
       distributeTweetToFollowers.DistributeTweetsToFollowers;
+    this.syncUsersToAlgolia = syncUsersToAlgolia.SyncUsersToAlgolia;
+    this.syncTweetsToAlgolia = syncTweetsToAlgolia.SyncTweetsToAlgolia;
   }
 }
