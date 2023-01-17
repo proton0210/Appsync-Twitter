@@ -15,6 +15,23 @@ const getTweetById = async (tweetId) => {
   return resp.Item;
 };
 
+const extractHashTags = (text) => {
+  const hashTags = new Set();
+  const regex = /(\#[a-zA-Z0-9_]+\b)/gm;
+  let m;
+  while ((m = regex.exec(text)) !== null) {
+    // this is necessary to avoid infinite loops with zero-width matches
+    if (m.index === regex.lastIndex) {
+      regex.lastIndex++;
+    }
+
+    m.forEach((match) => hashTags.add(match));
+  }
+
+  return Array.from(hashTags);
+};
+
 module.exports = {
-  getTweetById
+  getTweetById,
+  extractHashTags
 };

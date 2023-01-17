@@ -1,3 +1,4 @@
+import { Hashtag } from './Constructs/HashTagConstruct';
 import { GetFollowing } from './Constructs/GetFollowingConstruct';
 import { UnFollow } from './Constructs/UnfollowConstruct';
 import { NestedFollowingOtherProfile } from './Constructs/NestedFollowingProfie';
@@ -123,6 +124,7 @@ export class ApiStack extends cdk.Stack {
     ).resolver;
 
     new Search(this, 'QuerySearch', this.api).resolver;
+    new Hashtag(this, 'QueryHashtag', this.api).resolver;
   }
 
   public nestedResolvers() {
