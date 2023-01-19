@@ -6,4 +6,5 @@ export interface DataBaseStackProps extends cdk.StackProps {
   distributeTweetWithFollowers: cdk.aws_lambda_nodejs.NodejsFunction;
   syncUserstoAlgolia: cdk.aws_lambda_nodejs.NodejsFunction;
   syncTweetsToAlgolia: cdk.aws_lambda_nodejs.NodejsFunction;
+  Notify: cdk.aws_lambda_nodejs.NodejsFunction;
 }

@@ -1,3 +1,4 @@
+import { NotificationTable } from './Constructs/NotificationsTable';
 import { RelationshipsTable } from './Constructs/RelationshipsTable';
 import { RetweetsTable } from './Constructs/RetweetsTable';
 import { LikesTable } from './Constructs/LikesTable';
@@ -16,6 +17,7 @@ export class DataBaseStack extends cdk.Stack {
   public likesTable: LikesTable;
   public retweetTable: RetweetsTable;
   public relationShipsTable: RelationshipsTable;
+  public notificationsTable: NotificationTable;
   public props: DataBaseStackProps;
 
   constructor(scope: Construct, id: string, props: DataBaseStackProps) {
@@ -31,6 +33,7 @@ export class DataBaseStack extends cdk.Stack {
     this.initializeLikesTableWithAccess();
     this.initializeRetweetTableWithAccess();
     this.initializeRelationshipsTableWithAccess();
+    this.initializeNotificationTableWithAccess();
   }
 
   initializeUserTableWithAccess() {
@@ -55,6 +58,12 @@ export class DataBaseStack extends cdk.Stack {
     );
 
     this.props.syncTweetsToAlgolia.addEventSource(
+      new eventsources.DynamoEventSource(this.tweetsTable.table, {
+        startingPosition: cdk.aws_lambda.StartingPosition.LATEST
+      })
+    );
+
+    this.props.Notify.addEventSource(
       new eventsources.DynamoEventSource(this.tweetsTable.table, {
         startingPosition: cdk.aws_lambda.StartingPosition.LATEST
       })
@@ -90,5 +99,9 @@ export class DataBaseStack extends cdk.Stack {
         startingPosition: cdk.aws_lambda.StartingPosition.LATEST
       })
     );
+  }
+
+  initializeNotificationTableWithAccess() {
+    this.notificationsTable = new NotificationTable(this, 'NotificationTable');
   }
 }

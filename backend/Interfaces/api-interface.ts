@@ -8,4 +8,5 @@ export interface ApiStackProps extends cdk.StackProps {
   likesTable: cdk.aws_dynamodb.Table;
   retweetsTable: cdk.aws_dynamodb.Table;
   relationshipsTable: cdk.aws_dynamodb.Table;
+  notificationsTable: cdk.aws_dynamodb.Table;
 }

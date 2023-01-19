@@ -26,7 +26,8 @@ const dataBaseStack = new DataBaseStack(app, 'DataBaseStack', {
   distributedTweet: computeStack.distributedTweet,
   distributeTweetWithFollowers: computeStack.distributeTweetToFollowers,
   syncUserstoAlgolia: computeStack.syncUsersToAlgolia,
-  syncTweetsToAlgolia: computeStack.syncTweetsToAlgolia
+  syncTweetsToAlgolia: computeStack.syncTweetsToAlgolia,
+  Notify: computeStack.Notify
 });
 
 const apiStack = new ApiStack(app, 'ApiStack', {
@@ -36,7 +37,8 @@ const apiStack = new ApiStack(app, 'ApiStack', {
   timelinesTable: dataBaseStack.timelinesTable.table,
   likesTable: dataBaseStack.likesTable.table,
   retweetsTable: dataBaseStack.retweetTable.table,
-  relationshipsTable: dataBaseStack.relationShipsTable.table
+  relationshipsTable: dataBaseStack.relationShipsTable.table,
+  notificationsTable: dataBaseStack.notificationsTable.table
 });
 
 const storageStack = new StorageStack(app, 'StorageStack', {

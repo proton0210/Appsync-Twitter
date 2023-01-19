@@ -1,3 +1,4 @@
+import { NotifyRetweeted } from './Constructs/NotifyRetweeted';
 import { Hashtag } from './Constructs/HashTagConstruct';
 import { GetFollowing } from './Constructs/GetFollowingConstruct';
 import { UnFollow } from './Constructs/UnfollowConstruct';
@@ -322,6 +323,13 @@ export class ApiStack extends cdk.Stack {
       this.api,
       this.props.relationshipsTable
     ).resolver;
+
+    new NotifyRetweeted(
+      this,
+      'NotifyRetweeted',
+      this.api,
+      this.props.notificationsTable
+    );
   }
 
   public subscriptions() {
