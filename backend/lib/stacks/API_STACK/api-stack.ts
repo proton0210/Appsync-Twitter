@@ -37,6 +37,7 @@ import { NestedFollowedByOtherProfile } from './Constructs/NestedFollowedByProfi
 import { GetProfile } from './Constructs/GetProfileConstruct';
 import { GetFollowers } from './Constructs/GetFollowersConstruct';
 import { Search } from './Constructs/SearchConstruct';
+import { OnNotified } from './Constructs/onNotifiedConstrcut';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -56,13 +57,20 @@ export class ApiStack extends cdk.Stack {
           userPoolConfig: {
             userPool: props.userPool
           }
-        }
+        },
+        // additional iam auth
+        additionalAuthorizationModes: [
+          {
+            authorizationType: appsync.AuthorizationType.IAM
+          }
+        ]
       }
     });
     this.props = props;
     this.queries();
     this.mutations();
     this.nestedResolvers();
+    this.subscriptions();
 
     //output API URL
     new cdk.CfnOutput(this, 'GraphQLAPIURL', {
@@ -314,5 +322,9 @@ export class ApiStack extends cdk.Stack {
       this.api,
       this.props.relationshipsTable
     ).resolver;
+  }
+
+  public subscriptions() {
+    new OnNotified(this, 'OnNotifiedSubscription', this.api);
   }
 }
