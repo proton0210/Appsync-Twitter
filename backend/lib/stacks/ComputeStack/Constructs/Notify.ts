@@ -22,7 +22,7 @@ export class Notify extends Construct {
       timeout: cdk.Duration.seconds(30),
       environment: {
         GRAPHQL_API_URL:
-          'https://6ya7lm3jtnhtrk3vey5iwm656e.appsync-api.us-east-1.amazonaws.com/graphql',
+          'https://hj4awsi6dfgbfmbpltrfcd42ra.appsync-api.us-east-1.amazonaws.com/graphql',
         TWEETS_TABLE: 'TweetsTable'
       }
     });
