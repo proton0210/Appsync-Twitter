@@ -42,6 +42,8 @@ import { OnNotified } from './Constructs/onNotifiedConstrcut';
 import { NotifyLiked } from './Constructs/NotifyLiked';
 import { NotifyMention } from './Constructs/NotifyMention';
 import { NotifyReplied } from './Constructs/NotifyReplied';
+import { SendDirectMessage } from './Constructs/SendDirectMessage';
+import { OtherUserConversation } from './Constructs/NestedOtherUserConversationConstruct';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -239,6 +241,13 @@ export class ApiStack extends cdk.Stack {
       this.api,
       this.props.relationshipsTable
     ).resolver;
+
+    new OtherUserConversation(
+      this,
+      'OtherUserConversation',
+      this.api,
+      this.props.usersTable
+    ).resolver;
   }
 
   // id string should be unique for each construct
@@ -353,6 +362,19 @@ export class ApiStack extends cdk.Stack {
       'NotifyReplied',
       this.api,
       this.props.notificationsTable
+    );
+
+    const sendDirectMessageMutation = new SendDirectMessage(
+      this,
+      'SendDirectMessageMutation',
+      this.api
+    );
+    sendDirectMessageMutation.resolver;
+    this.props.conversationsTable.grantFullAccess(
+      sendDirectMessageMutation.SendDirectMessagefunction
+    );
+    this.props.directMessagesTable.grantFullAccess(
+      sendDirectMessageMutation.SendDirectMessagefunction
     );
   }
 

@@ -39,7 +39,9 @@ const apiStack = new ApiStack(app, 'ApiStack', {
   likesTable: dataBaseStack.likesTable.table,
   retweetsTable: dataBaseStack.retweetTable.table,
   relationshipsTable: dataBaseStack.relationShipsTable.table,
-  notificationsTable: dataBaseStack.notificationsTable.table
+  notificationsTable: dataBaseStack.notificationsTable.table,
+  conversationsTable: dataBaseStack.conversationsTable.table,
+  directMessagesTable: dataBaseStack.directMessagesTable.table
 });
 
 const storageStack = new StorageStack(app, 'StorageStack', {

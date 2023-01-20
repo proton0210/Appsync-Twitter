@@ -9,6 +9,8 @@ import * as eventsources from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Construct } from 'constructs';
 import { UsersTable } from './Constructs/UsersTable';
 import { TimelinesTable } from './Constructs/TimelinesTable';
+import { ConversationsTable } from './Constructs/ConversationTable';
+import { DirectMessagesTable } from './Constructs/DirectMessagesTable';
 
 export class DataBaseStack extends cdk.Stack {
   public usersTable: UsersTable;
@@ -18,6 +20,8 @@ export class DataBaseStack extends cdk.Stack {
   public retweetTable: RetweetsTable;
   public relationShipsTable: RelationshipsTable;
   public notificationsTable: NotificationTable;
+  public conversationsTable: ConversationsTable;
+  public directMessagesTable: DirectMessagesTable;
   public props: DataBaseStackProps;
 
   constructor(scope: Construct, id: string, props: DataBaseStackProps) {
@@ -34,6 +38,8 @@ export class DataBaseStack extends cdk.Stack {
     this.initializeRetweetTableWithAccess();
     this.initializeRelationshipsTableWithAccess();
     this.initializeNotificationTableWithAccess();
+    this.initializeConversationsTableWithAccess();
+    this.initializeDirectMessagesTableWithAccess();
   }
 
   initializeUserTableWithAccess() {
@@ -109,5 +115,16 @@ export class DataBaseStack extends cdk.Stack {
 
   initializeNotificationTableWithAccess() {
     this.notificationsTable = new NotificationTable(this, 'NotificationTable');
+  }
+
+  initializeConversationsTableWithAccess() {
+    this.conversationsTable = new ConversationsTable(this, 'ConversationTable');
+  }
+
+  initializeDirectMessagesTableWithAccess() {
+    this.directMessagesTable = new DirectMessagesTable(
+      this,
+      'DirectMessagesTable'
+    );
   }
 }
