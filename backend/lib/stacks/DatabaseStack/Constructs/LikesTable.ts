@@ -15,6 +15,7 @@ export class LikesTable extends Construct {
         name: 'tweetId',
         type: cdk.aws_dynamodb.AttributeType.STRING
       },
+      stream: cdk.aws_dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
       billingMode: cdk.aws_dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       tableName: 'LikesTable'

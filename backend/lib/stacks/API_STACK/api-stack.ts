@@ -39,6 +39,9 @@ import { GetProfile } from './Constructs/GetProfileConstruct';
 import { GetFollowers } from './Constructs/GetFollowersConstruct';
 import { Search } from './Constructs/SearchConstruct';
 import { OnNotified } from './Constructs/onNotifiedConstrcut';
+import { NotifyLiked } from './Constructs/NotifyLiked';
+import { NotifyMention } from './Constructs/NotifyMention';
+import { NotifyReplied } from './Constructs/NotifyReplied';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -327,6 +330,27 @@ export class ApiStack extends cdk.Stack {
     new NotifyRetweeted(
       this,
       'NotifyRetweeted',
+      this.api,
+      this.props.notificationsTable
+    );
+
+    new NotifyLiked(
+      this,
+      'NotifyLiked',
+      this.api,
+      this.props.notificationsTable
+    );
+
+    new NotifyMention(
+      this,
+      'NotifyMention',
+      this.api,
+      this.props.notificationsTable
+    );
+
+    new NotifyReplied(
+      this,
+      'NotifyReplied',
       this.api,
       this.props.notificationsTable
     );

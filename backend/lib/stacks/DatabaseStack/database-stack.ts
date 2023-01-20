@@ -80,6 +80,12 @@ export class DataBaseStack extends cdk.Stack {
 
   initializeLikesTableWithAccess() {
     this.likesTable = new LikesTable(this, 'LikesTable');
+    // add event source
+    this.props.NotifyLiked.addEventSource(
+      new eventsources.DynamoEventSource(this.likesTable.table, {
+        startingPosition: cdk.aws_lambda.StartingPosition.LATEST
+      })
+    );
   }
   initializeRetweetTableWithAccess() {
     this.retweetTable = new RetweetsTable(this, 'RetweetsTable');

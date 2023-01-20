@@ -6,7 +6,7 @@ const { USERS_TABLE } = process.env;
 
 const getUserByScreenName = async (screenName) => {
   const resp = await DocumentClient.query({
-    TableName: USERS_TABLE,
+    TableName: 'UsersTable',
     KeyConditionExpression: 'screenName = :screenName',
     ExpressionAttributeValues: {
       ':screenName': screenName

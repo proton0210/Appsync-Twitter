@@ -49,6 +49,7 @@
     "isomorphic-fetch": "^3.0.0",
     "retry": "^0.13.1",
     "source-map-support": "^0.5.21",
-    "ulid": "^2.3.0"
+    "ulid": "^2.3.0",
+    "ws": "^8.12.0"
   }
 }

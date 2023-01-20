@@ -1,3 +1,4 @@
+import { NotifyLiked } from './Constructs/NotifyLiked';
 import { SyncTweetsToAlgolia } from './Constructs/SyncTweetsToAlgolia';
 import { SyncUsersToAlgolia } from './Constructs/SyncUsersToAlgolia';
 import { DistributeTweetsToFollowers } from './Constructs/Distribute-Tweet-To-Followers';
@@ -12,6 +13,7 @@ export class ComputeStack extends cdk.Stack {
   public readonly distributedTweet: cdk.aws_lambda_nodejs.NodejsFunction;
   public readonly distributeTweetToFollowers: cdk.aws_lambda_nodejs.NodejsFunction;
   public readonly Notify: cdk.aws_lambda_nodejs.NodejsFunction;
+  public readonly NotifyLiked: cdk.aws_lambda_nodejs.NodejsFunction;
   public readonly syncUsersToAlgolia: cdk.aws_lambda_nodejs.NodejsFunction;
   public readonly syncTweetsToAlgolia: cdk.aws_lambda_nodejs.NodejsFunction;
 
@@ -39,6 +41,8 @@ export class ComputeStack extends cdk.Stack {
 
     const notify = new Notify(this, 'Notify');
 
+    const notifyLiked = new NotifyLiked(this, 'NotifyLiked');
+
     this.postConfirmationHook = confirmUserSignUpTrigger.confirmUserSignUp;
     this.distributedTweet = distributedTweet.DistributeTweet;
     this.distributeTweetToFollowers =
@@ -46,5 +50,6 @@ export class ComputeStack extends cdk.Stack {
     this.syncUsersToAlgolia = syncUsersToAlgolia.SyncUsersToAlgolia;
     this.syncTweetsToAlgolia = syncTweetsToAlgolia.SyncTweetsToAlgolia;
     this.Notify = notify.Notify;
+    this.NotifyLiked = notifyLiked.NotifyLiked;
   }
 }
