@@ -44,6 +44,10 @@ import { NotifyMention } from './Constructs/NotifyMention';
 import { NotifyReplied } from './Constructs/NotifyReplied';
 import { SendDirectMessage } from './Constructs/SendDirectMessage';
 import { OtherUserConversation } from './Constructs/NestedOtherUserConversationConstruct';
+import { ListConversations } from './Constructs/ListConversations';
+import { DirectMessagesTable } from '../DatabaseStack/Constructs/DirectMessagesTable';
+import { GetDirectMessages } from './Constructs/GetDirectMessages';
+import { MessageFrom } from './Constructs/NestedMessageFrom';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -139,6 +143,20 @@ export class ApiStack extends cdk.Stack {
 
     new Search(this, 'QuerySearch', this.api).resolver;
     new Hashtag(this, 'QueryHashtag', this.api).resolver;
+
+    new ListConversations(
+      this,
+      'QueryListConversations',
+      this.api,
+      this.props.conversationsTable
+    ).resolver;
+
+    new GetDirectMessages(
+      this,
+      'QueryGetDirectMessages',
+      this.api,
+      this.props.directMessagesTable
+    ).resolver;
   }
 
   public nestedResolvers() {
@@ -248,6 +266,9 @@ export class ApiStack extends cdk.Stack {
       this.api,
       this.props.usersTable
     ).resolver;
+
+    new MessageFrom(this, 'MessageFrom', this.api, this.props.usersTable)
+      .resolver;
   }
 
   // id string should be unique for each construct
