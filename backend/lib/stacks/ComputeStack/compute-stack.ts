@@ -1,3 +1,4 @@
+import { SendDirectMessage } from './Constructs/SendDirectMessage';
 import { NotifyLiked } from './Constructs/NotifyLiked';
 import { SyncTweetsToAlgolia } from './Constructs/SyncTweetsToAlgolia';
 import { SyncUsersToAlgolia } from './Constructs/SyncUsersToAlgolia';
@@ -16,6 +17,7 @@ export class ComputeStack extends cdk.Stack {
   public readonly NotifyLiked: cdk.aws_lambda_nodejs.NodejsFunction;
   public readonly syncUsersToAlgolia: cdk.aws_lambda_nodejs.NodejsFunction;
   public readonly syncTweetsToAlgolia: cdk.aws_lambda_nodejs.NodejsFunction;
+  public readonly sendDirectMessage: cdk.aws_lambda_nodejs.NodejsFunction;
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -42,6 +44,7 @@ export class ComputeStack extends cdk.Stack {
     const notify = new Notify(this, 'Notify');
 
     const notifyLiked = new NotifyLiked(this, 'NotifyLiked');
+    const sendDirectMessage = new SendDirectMessage(this, 'SendDirectMessage');
 
     this.postConfirmationHook = confirmUserSignUpTrigger.confirmUserSignUp;
     this.distributedTweet = distributedTweet.DistributeTweet;
@@ -51,5 +54,6 @@ export class ComputeStack extends cdk.Stack {
     this.syncTweetsToAlgolia = syncTweetsToAlgolia.SyncTweetsToAlgolia;
     this.Notify = notify.Notify;
     this.NotifyLiked = notifyLiked.NotifyLiked;
+    this.sendDirectMessage = sendDirectMessage.SendDirectMessagefunction;
   }
 }

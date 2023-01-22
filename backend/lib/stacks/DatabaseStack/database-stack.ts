@@ -119,12 +119,22 @@ export class DataBaseStack extends cdk.Stack {
 
   initializeConversationsTableWithAccess() {
     this.conversationsTable = new ConversationsTable(this, 'ConversationTable');
+    this.conversationsTable.table.grantFullAccess(this.props.sendDirectMessage);
   }
 
   initializeDirectMessagesTableWithAccess() {
     this.directMessagesTable = new DirectMessagesTable(
       this,
       'DirectMessagesTable'
+    );
+    this.directMessagesTable.table.grantFullAccess(
+      this.props.sendDirectMessage
+    );
+
+    this.props.sendDirectMessage.addEventSource(
+      new eventsources.DynamoEventSource(this.directMessagesTable.table, {
+        startingPosition: cdk.aws_lambda.StartingPosition.LATEST
+      })
     );
   }
 }

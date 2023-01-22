@@ -28,7 +28,8 @@ const dataBaseStack = new DataBaseStack(app, 'DataBaseStack', {
   syncUserstoAlgolia: computeStack.syncUsersToAlgolia,
   syncTweetsToAlgolia: computeStack.syncTweetsToAlgolia,
   Notify: computeStack.Notify,
-  NotifyLiked: computeStack.NotifyLiked
+  NotifyLiked: computeStack.NotifyLiked,
+  sendDirectMessage: computeStack.sendDirectMessage
 });
 
 const apiStack = new ApiStack(app, 'ApiStack', {
@@ -41,7 +42,8 @@ const apiStack = new ApiStack(app, 'ApiStack', {
   relationshipsTable: dataBaseStack.relationShipsTable.table,
   notificationsTable: dataBaseStack.notificationsTable.table,
   conversationsTable: dataBaseStack.conversationsTable.table,
-  directMessagesTable: dataBaseStack.directMessagesTable.table
+  directMessagesTable: dataBaseStack.directMessagesTable.table,
+  directMesssageFunction: computeStack.sendDirectMessage
 });
 
 const storageStack = new StorageStack(app, 'StorageStack', {

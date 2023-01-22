@@ -42,10 +42,8 @@ import { OnNotified } from './Constructs/onNotifiedConstrcut';
 import { NotifyLiked } from './Constructs/NotifyLiked';
 import { NotifyMention } from './Constructs/NotifyMention';
 import { NotifyReplied } from './Constructs/NotifyReplied';
-import { SendDirectMessage } from './Constructs/SendDirectMessage';
 import { OtherUserConversation } from './Constructs/NestedOtherUserConversationConstruct';
 import { ListConversations } from './Constructs/ListConversations';
-import { DirectMessagesTable } from '../DatabaseStack/Constructs/DirectMessagesTable';
 import { GetDirectMessages } from './Constructs/GetDirectMessages';
 import { MessageFrom } from './Constructs/NestedMessageFrom';
 export class ApiStack extends cdk.Stack {
@@ -385,18 +383,15 @@ export class ApiStack extends cdk.Stack {
       this.props.notificationsTable
     );
 
-    const sendDirectMessageMutation = new SendDirectMessage(
-      this,
-      'SendDirectMessageMutation',
-      this.api
-    );
-    sendDirectMessageMutation.resolver;
-    this.props.conversationsTable.grantFullAccess(
-      sendDirectMessageMutation.SendDirectMessagefunction
-    );
-    this.props.directMessagesTable.grantFullAccess(
-      sendDirectMessageMutation.SendDirectMessagefunction
-    );
+    new appsync.Resolver(this, 'SendDirectMessageResolver', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'sendDirectMessage',
+      dataSource: this.api.addLambdaDataSource(
+        'SendDirectMessage',
+        this.props.directMesssageFunction
+      )
+    });
   }
 
   public subscriptions() {

@@ -11,4 +11,5 @@ export interface ApiStackProps extends cdk.StackProps {
   notificationsTable: cdk.aws_dynamodb.Table;
   conversationsTable: cdk.aws_dynamodb.Table;
   directMessagesTable: cdk.aws_dynamodb.Table;
+  directMesssageFunction: cdk.aws_lambda_nodejs.NodejsFunction;
 }
