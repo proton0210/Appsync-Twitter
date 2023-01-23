@@ -6,6 +6,8 @@ const { CONVERSATIONS_TABLE, DIRECT_MESSAGES_TABLE } = process.env;
 
 module.exports.handler = async (event) => {
   const { otherUserId, message } = event.arguments;
+  console.log('otherUserId', otherUserId);
+  console.log('message', message);
   const { username } = event.identity;
   const timestamp = new Date().toJSON();
 

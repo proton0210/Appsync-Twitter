@@ -131,7 +131,15 @@ export class DataBaseStack extends cdk.Stack {
       this.props.sendDirectMessage
     );
 
+    this.directMessagesTable.table.grantFullAccess(this.props.NotifyDMed);
+
     this.props.sendDirectMessage.addEventSource(
+      new eventsources.DynamoEventSource(this.directMessagesTable.table, {
+        startingPosition: cdk.aws_lambda.StartingPosition.LATEST
+      })
+    );
+
+    this.props.NotifyDMed.addEventSource(
       new eventsources.DynamoEventSource(this.directMessagesTable.table, {
         startingPosition: cdk.aws_lambda.StartingPosition.LATEST
       })

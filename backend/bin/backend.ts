@@ -29,7 +29,8 @@ const dataBaseStack = new DataBaseStack(app, 'DataBaseStack', {
   syncTweetsToAlgolia: computeStack.syncTweetsToAlgolia,
   Notify: computeStack.Notify,
   NotifyLiked: computeStack.NotifyLiked,
-  sendDirectMessage: computeStack.sendDirectMessage
+  sendDirectMessage: computeStack.sendDirectMessage,
+  NotifyDMed: computeStack.NotifyDMed
 });
 
 const apiStack = new ApiStack(app, 'ApiStack', {

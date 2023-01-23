@@ -16,6 +16,7 @@ import { NestedMyProfile } from './Constructs/Nested_MyProfileTweet';
 import { GetLikes } from './Constructs/GetLikesConstruct';
 import { Unlike } from './Constructs/UnlikeConstruct';
 import { NestedLiked } from './Constructs/NestedLiked';
+import { SendDirectMessageMutation } from './Constructs/SendDirectMessageMutation';
 import { Like } from './Constructs/LikeContruct';
 import { NestedUnhydratedTweetsPage } from './Constructs/NestedUnhydratedTweets';
 import { GetMyTimeLine } from './Constructs/GetMyTimeLine';
@@ -46,6 +47,7 @@ import { OtherUserConversation } from './Constructs/NestedOtherUserConversationC
 import { ListConversations } from './Constructs/ListConversations';
 import { GetDirectMessages } from './Constructs/GetDirectMessages';
 import { MessageFrom } from './Constructs/NestedMessageFrom';
+import { NotifyDMed } from './Constructs/NotifyDMed';
 export class ApiStack extends cdk.Stack {
   public api: appsync.GraphqlApi;
   public props: ApiStackProps;
@@ -383,15 +385,16 @@ export class ApiStack extends cdk.Stack {
       this.props.notificationsTable
     );
 
-    new appsync.Resolver(this, 'SendDirectMessageResolver', {
-      api: this.api,
-      typeName: 'Mutation',
-      fieldName: 'sendDirectMessage',
-      dataSource: this.api.addLambdaDataSource(
-        'SendDirectMessage',
-        this.props.directMesssageFunction
-      )
-    });
+ 
+
+    new SendDirectMessageMutation(
+      this,
+      'SendDirectMessageMutationResolver',
+      this.api,
+      this.props.directMesssageFunction
+    ).resolver;
+
+    new NotifyDMed(this, 'NotifyDMed', this.api, this.props.notificationsTable);
   }
 
   public subscriptions() {
