@@ -385,8 +385,6 @@ export class ApiStack extends cdk.Stack {
       this.props.notificationsTable
     );
 
- 
-
     new SendDirectMessageMutation(
       this,
       'SendDirectMessageMutationResolver',
